@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>송쌤과학 | 혼합물 분리 실험 퀴즈</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1729;
+  --card-bg: #1a2744;
+  --card-border: #2a3d66;
+  --accent: #4fc3f7;
+  --accent-glow: rgba(79,195,247,0.3);
+  --success: #66bb6a;
+  --success-glow: rgba(102,187,106,0.3);
+  --error: #ef5350;
+  --error-glow: rgba(239,83,80,0.3);
+  --text: #e8eaf6;
+  --text-dim: #8090b8;
+  --drop-zone: #1e3050;
+  --drop-hover: #253d60;
+  --gold: #ffd54f;
+  --hint-bg: rgba(255,213,79,0.08);
+  --hint-border: rgba(255,213,79,0.25);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(79,195,247,.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(171,71,188,.06) 0%,transparent 50%);pointer-events:none;z-index:0}
+.container{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:20px 16px 40px}
+.header{text-align:center;margin-bottom:20px}
+.header .brand{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.header h1{font-size:24px;font-weight:900;background:linear-gradient(135deg,#4fc3f7,#ab47bc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3}
+.header .subtitle{font-size:12px;color:var(--text-dim);margin-top:4px}
+.timer-display{text-align:center;margin-bottom:16px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--text-dim);letter-spacing:1px}
+.timer-display span{color:var(--accent);font-weight:800;font-size:18px}
+.progress-bar{display:flex;gap:6px;margin-bottom:20px}
+.progress-step{flex:1;height:6px;border-radius:3px;background:var(--card-border);transition:all .5s}
+.progress-step.completed{background:var(--success);box-shadow:0 0 8px var(--success-glow)}
+.progress-step.active{background:var(--accent);box-shadow:0 0 8px var(--accent-glow);animation:pulse-bar 1.5s infinite}
+@keyframes pulse-bar{0%,100%{opacity:1}50%{opacity:.6}}
+.stage-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden;animation:fadeSlideIn .5s ease}
+.stage-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--stage-color,var(--accent)),transparent)}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.stage-number{font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;color:var(--stage-color,var(--accent));letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.stage-question{font-size:17px;font-weight:700;line-height:1.5;margin-bottom:4px}
+.stage-desc{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:16px}
+.stage-desc strong{color:var(--text);font-weight:700}
+.remaining-label{font-size:11px;color:var(--text-dim);margin-bottom:6px;font-weight:500}
+.remaining{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.substance-tag{font-size:11px;padding:4px 10px;background:rgba(79,195,247,.1);border:1px solid rgba(79,195,247,.2);border-radius:20px;color:var(--accent);font-weight:500}
+.substance-tag.removed{background:rgba(102,187,106,.1);border-color:rgba(102,187,106,.2);color:var(--success);text-decoration:line-through;opacity:.5}
+.drop-zones{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.drop-zone-row{display:flex;align-items:center;gap:10px}
+.drop-label{font-size:12px;font-weight:700;color:var(--text-dim);min-width:90px;text-align:right;flex-shrink:0}
+.drop-zone{flex:1;min-height:50px;background:var(--drop-zone);border:2px dashed var(--card-border);border-radius:14px;display:flex;align-items:center;justify-content:center;padding:8px 12px;transition:all .25s;cursor:pointer}
+.drop-zone.drag-over{border-color:var(--accent);background:var(--drop-hover);box-shadow:0 0 16px var(--accent-glow);transform:scale(1.02)}
+.drop-zone.correct{border-color:var(--success);border-style:solid;background:rgba(102,187,106,.08)}
+.drop-zone.wrong{border-color:var(--error);animation:shake .4s}
+.drop-zone .placeholder{font-size:12px;color:var(--text-dim);opacity:.5}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.cards-area{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:50px;padding:12px;background:rgba(255,255,255,.02);border-radius:14px;border:1px solid rgba(255,255,255,.04)}
+.drag-card{padding:10px 16px;background:linear-gradient(135deg,var(--card-bg),#223358);border:1.5px solid var(--card-border);border-radius:12px;font-size:13px;font-weight:700;color:var(--text);cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;transition:all .2s;white-space:nowrap}
+.drag-card:active{cursor:grabbing}
+.drag-card:hover{border-color:var(--accent);box-shadow:0 4px 16px rgba(0,0,0,.3);transform:translateY(-2px)}
+.drag-card.dragging{opacity:.4;transform:scale(.95)}
+.drag-card.placed{background:linear-gradient(135deg,rgba(102,187,106,.15),rgba(102,187,106,.05));border-color:var(--success);color:var(--success);pointer-events:none}
+.drag-ghost{position:fixed;pointer-events:none;z-index:9999;padding:10px 16px;background:linear-gradient(135deg,#2a4070,#1a2744);border:2px solid var(--accent);border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 20px var(--accent-glow);font-family:'Noto Sans KR',sans-serif;transform:translate(-50%,-50%) scale(1.05);white-space:nowrap}
+.btn-row{display:flex;gap:8px;margin-top:14px}
+.btn{flex:1;padding:13px;border:none;border-radius:14px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s}
+.btn.primary{background:linear-gradient(135deg,var(--accent),#039be5);color:#fff;box-shadow:0 4px 16px var(--accent-glow)}
+.btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px var(--accent-glow)}
+.btn:disabled{background:var(--card-border)!important;color:var(--text-dim)!important;cursor:default!important;box-shadow:none!important;transform:none!important;border:none!important}
+.btn.next{background:linear-gradient(135deg,var(--success),#43a047);color:#fff;box-shadow:0 4px 16px var(--success-glow)}
+.btn.hint{background:transparent;border:1.5px solid var(--gold);color:var(--gold);flex:0 0 auto;padding:13px 20px}
+.btn.hint:hover{background:rgba(255,213,79,.1)}
+.hint-box{margin-top:10px;padding:12px 16px;border-radius:12px;background:var(--hint-bg);border:1px solid var(--hint-border);font-size:12px;line-height:1.6;color:var(--gold);display:none}
+.hint-box.show{display:block;animation:fadeSlideIn .3s ease}
+.hint-box .hint-title{font-weight:700;margin-bottom:4px;font-size:13px}
+.feedback{margin-top:10px;padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.6;font-weight:500;display:none}
+.feedback.show{display:block;animation:fadeSlideIn .3s ease}
+.feedback.correct{background:rgba(102,187,106,.1);border:1px solid rgba(102,187,106,.3);color:var(--success)}
+.feedback.wrong{background:rgba(239,83,80,.1);border:1px solid rgba(239,83,80,.3);color:var(--error)}
+/* ===== COMPLETION ===== */
+.completion{display:none}
+.completion.show{display:block}
+.result-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:24px;padding:28px 20px;position:relative;overflow:hidden}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#4fc3f7,#ab47bc,#ff7043,#66bb6a,#ffa726)}
+.result-header{text-align:center;margin-bottom:20px}
+.result-header .trophy{font-size:52px;margin-bottom:8px}
+.result-header h2{font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--gold),#ff8f00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.result-header .date-text{font-size:11px;color:var(--text-dim)}
+.grade-section{text-align:center;margin-bottom:20px}
+.grade-badge{display:inline-block;padding:8px 28px;border-radius:40px;font-size:15px;font-weight:800;letter-spacing:1px}
+.grade-badge.perfect{background:linear-gradient(135deg,rgba(255,213,79,.15),rgba(255,143,0,.15));border:2px solid var(--gold);color:var(--gold)}
+.grade-badge.great{background:linear-gradient(135deg,rgba(102,187,106,.15),rgba(67,160,71,.15));border:2px solid var(--success);color:var(--success)}
+.grade-badge.good{background:linear-gradient(135deg,rgba(79,195,247,.15),rgba(3,155,229,.15));border:2px solid var(--accent);color:var(--accent)}
+.grade-badge.tryagain{background:linear-gradient(135deg,rgba(255,167,38,.15),rgba(239,108,0,.15));border:2px solid #ffa726;color:#ffa726}
+.grade-comment{font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.5}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat-box{background:rgba(255,255,255,.03);border:1px solid var(--card-border);border-radius:14px;padding:14px 10px;text-align:center}
+.stat-box .stat-icon{font-size:22px;margin-bottom:4px}
+.stat-box .stat-value{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--accent);line-height:1.2}
+.stat-box .stat-label{font-size:10px;color:var(--text-dim);margin-top:2px;font-weight:500}
+.difficulty-box{background:rgba(255,167,38,.06);border:1px solid rgba(255,167,38,.2);border-radius:14px;padding:14px 16px;margin-bottom:20px}
+.difficulty-box .diff-title{font-size:13px;font-weight:700;color:#ffa726;margin-bottom:6px}
+.difficulty-box .diff-text{font-size:12px;color:var(--text-dim);line-height:1.7}
+.difficulty-box .diff-text strong{color:var(--text)}
+.stage-results{margin-bottom:20px}
+.stage-results .sr-title{font-size:12px;font-weight:700;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.sr-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;margin-bottom:6px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)}
+.sr-row .sr-stage{font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;min-width:60px;flex-shrink:0}
+.sr-row .sr-content{flex:1;font-size:12px;color:var(--text-dim);line-height:1.4}
+.sr-row .sr-content strong{color:var(--text);font-weight:600}
+.sr-row .sr-status{font-size:18px;flex-shrink:0}
+.sr-row.hard{border-color:rgba(255,167,38,.3);background:rgba(255,167,38,.04)}
+.fun-facts{margin-bottom:20px}
+.fun-facts .ff-title{font-size:12px;font-weight:700;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.ff-item{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;margin-bottom:4px;background:rgba(255,255,255,.02);font-size:12px;color:var(--text-dim);line-height:1.4}
+.ff-item .ff-icon{font-size:18px;flex-shrink:0}
+.ff-item strong{color:var(--text)}
+.result-footer{text-align:center;padding-top:12px;border-top:1px solid var(--card-border)}
+.result-footer .brand-mark{font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:2px;opacity:.7}
+.result-buttons{display:flex;gap:8px;margin-top:16px}
+.btn-restart{flex:1;padding:14px;border:2px solid var(--accent);border-radius:14px;background:transparent;color:var(--accent);font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s}
+.btn-restart:hover{background:var(--accent);color:var(--bg)}
+.btn-capture{flex:1;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--accent),#039be5);color:#fff;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s;box-shadow:0 4px 16px var(--accent-glow)}
+.btn-capture:hover{transform:translateY(-1px);box-shadow:0 6px 24px var(--accent-glow)}
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;z-index:9998;pointer-events:none;animation:confetti-fall 1.5s ease-out forwards}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(80vh) rotate(720deg) scale(.3);opacity:0}}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--success);color:#fff;padding:12px 24px;border-radius:12px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.4);animation:toastIn .3s ease;font-family:'Noto Sans KR',sans-serif}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@media(max-width:480px){
+  .container{padding:14px 10px 30px}
+  .header h1{font-size:20px}
+  .stage-question{font-size:15px}
+  .drop-zone-row{flex-direction:column;align-items:stretch;gap:4px}
+  .drop-label{text-align:left;min-width:auto;font-size:11px}
+  .drag-card{padding:8px 12px;font-size:12px}
+  .stats-grid{gap:6px}
+  .stat-box{padding:10px 6px}
+  .stat-box .stat-value{font-size:18px}
+  .result-buttons{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="brand">송쌤과학 가상실험실</div>
+    <h1>혼합물 분리 실험 퀴즈</h1>
+    <div class="subtitle">카드를 끌어서 각 단계의 정답을 맞춰보세요!</div>
+  </div>
+  <div class="timer-display" id="timerDisplay">⏱ 경과 시간: <span id="timerValue">00:00</span></div>
+  <div class="progress-bar" id="progressBar"></div>
+  <div id="quizArea"></div>
+  <div class="completion" id="completion"></div>
+</div>
+<script>
+const STAGES=[
+  {stage:1,color:'#4fc3f7',
+    question:'1단계: 가장 먼저 분리할 물질은?',
+    desc:'혼합물에 <strong>물, 소금, 올리브유, 스타이로폼, 플라스틱, 에탄올</strong>이 섞여 있습니다.',
+    remaining:['물','소금','올리브유','스타이로폼','플라스틱','에탄올'],removed:[],
+    slots:[{label:'분리할 물질',answer:'스타이로폼'},{label:'이용한 특성',answer:'밀도'},{label:'분리 방법',answer:'건져냄(체)'}],
+    cards:['스타이로폼','올리브유','플라스틱','밀도','끓는점','용해도','건져냄(체)','거름(여과)','증류'],
+    explanation:'스타이로폼은 밀도가 약 0.03g/cm³으로 매우 낮아 혼합물 표면에 떠오릅니다. 체나 핀셋으로 건져내면 됩니다.',
+    hints:['💡 이 물질은 물 위에 둥둥 떠다니는 아주 가벼운 물질이에요.','💡 밀도가 매우 낮은 물질을 먼저 제거하면 이후 실험이 편해져요.','💡 정답: 스타이로폼 / 밀도 / 건져냄(체)']},
+  {stage:2,color:'#ab47bc',
+    question:'2단계: 물 위에 뜨는 액체를 분리하려면?',
+    desc:'스타이로폼을 제거한 후, <strong>물과 섞이지 않는 액체</strong>가 위에 떠 있습니다.',
+    remaining:['물','소금','올리브유','플라스틱','에탄올'],removed:['스타이로폼'],
+    slots:[{label:'분리할 물질',answer:'올리브유'},{label:'이용한 특성',answer:'밀도'},{label:'분리 방법',answer:'분별깔때기'}],
+    cards:['올리브유','플라스틱','소금','밀도','용해도','끓는점','분별깔때기','증발','거름(여과)'],
+    explanation:'올리브유(밀도 약 0.91g/cm³)는 물보다 가벼워 물 위에 뜹니다. 분별깔때기를 이용해 아래층 수용액을 빼내고 올리브유를 분리합니다.',
+    hints:['💡 식용유를 물에 넣으면 어떻게 되나요? 층이 나뉘죠!','💡 서로 섞이지 않는 두 액체를 분리하는 실험 도구를 생각해 보세요.','💡 정답: 올리브유 / 밀도 / 분별깔때기']},
+  {stage:3,color:'#ff7043',
+    question:'3단계: 녹지 않는 고체를 분리하려면?',
+    desc:'액체 속에 <strong>녹지 않는 고체</strong>가 남아 있습니다. 어떻게 분리할까요?',
+    remaining:['물','소금','플라스틱','에탄올'],removed:['스타이로폼','올리브유'],
+    slots:[{label:'분리할 물질',answer:'플라스틱'},{label:'이용한 특성',answer:'용해도'},{label:'분리 방법',answer:'거름(여과)'}],
+    cards:['플라스틱','에탄올','소금','용해도','밀도','끓는점','거름(여과)','증류','분별깔때기'],
+    explanation:'플라스틱은 물에 녹지 않는 불용성 고체입니다. 거름종이와 깔때기를 이용한 여과로 액체와 분리할 수 있습니다.',
+    hints:['💡 이 물질은 물에 전혀 녹지 않는 고체예요.','💡 녹지 않는 고체를 액체에서 분리할 때 사용하는 종이가 있어요!','💡 정답: 플라스틱 / 용해도 / 거름(여과)']},
+  {stage:4,color:'#ffa726',
+    question:'4단계: 에탄올을 분리하려면?',
+    desc:'거른 액체에는 <strong>물, 소금, 에탄올</strong>이 남아 있습니다. 에탄올을 먼저 분리해 봅시다.',
+    remaining:['물','소금','에탄올'],removed:['스타이로폼','올리브유','플라스틱'],
+    slots:[{label:'분리할 물질',answer:'에탄올'},{label:'이용한 특성',answer:'끓는점'},{label:'분리 방법',answer:'증류'}],
+    cards:['에탄올','소금','물','끓는점','밀도','용해도','증류','증발','분별깔때기'],
+    explanation:'에탄올의 끓는점(78.4°C)은 물(100°C)보다 낮습니다. 증류를 통해 먼저 기화하는 에탄올을 냉각관으로 모아 분리합니다.',
+    hints:['💡 이 물질은 물보다 낮은 온도에서 끓어요. (78.4°C)','💡 끓는점 차이를 이용해 액체 혼합물을 분리하는 방법은?','💡 정답: 에탄올 / 끓는점 / 증류']},
+  {stage:5,color:'#ec407a',
+    question:'5단계: 마지막! 소금과 물을 분리하려면?',
+    desc:'이제 <strong>소금물</strong>만 남았습니다. 마지막 분리를 완성하세요!',
+    remaining:['물','소금'],removed:['스타이로폼','올리브유','플라스틱','에탄올'],
+    slots:[{label:'이용한 특성',answer:'끓는점'},{label:'분리 방법',answer:'증발'}],
+    cards:['끓는점','밀도','용해도','증발','증류','거름(여과)'],
+    explanation:'물(끓는점 100°C)을 가열하여 증발시키면, 끓는점이 매우 높은(1,413°C) 소금 결정만 남습니다.',
+    hints:['💡 소금의 끓는점은 1,413°C! 물은 100°C에요. 엄청난 차이죠?','💡 물을 날려 보내면 무엇이 남을까요?','💡 정답: 끓는점 / 증발']}
+];
+
+let currentStage=0,stageData=[],dragData=null,touchDragEl=null,ghostEl=null;
+let timerInterval=null,startTime=0,stageStartTime=0,totalElapsed=0;
+
+function init(){
+  currentStage=0;
+  stageData=STAGES.map(()=>({wrongCount:0,hintUsed:0,time:0}));
+  document.getElementById('completion').classList.remove('show');
+  document.getElementById('completion').innerHTML='';
+  document.getElementById('timerDisplay').style.display='';
+  startTime=Date.now();stageStartTime=Date.now();
+  clearInterval(timerInterval);
+  timerInterval=setInterval(updateTimer,1000);
+  renderProgress();renderStage();
+}
+function updateTimer(){
+  const e=Math.floor((Date.now()-startTime)/1000);
+  document.getElementById('timerValue').textContent=`${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`;
+}
+function formatTime(s){return s<60?`${s}초`:`${Math.floor(s/60)}분 ${s%60}초`;}
+function renderProgress(){
+  const bar=document.getElementById('progressBar');bar.innerHTML='';
+  STAGES.forEach((_,i)=>{const s=document.createElement('div');s.className='progress-step';if(i<currentStage)s.classList.add('completed');if(i===currentStage)s.classList.add('active');bar.appendChild(s);});
+}
+function renderStage(){
+  const stage=STAGES[currentStage];
+  const shuffled=[...stage.cards].sort(()=>Math.random()-.5);
+  document.getElementById('quizArea').innerHTML=`<div class="stage-card" style="--stage-color:${stage.color}">
+    <div class="stage-number">STAGE ${stage.stage} / 5</div>
+    <div class="stage-question">${stage.question}</div>
+    <div class="stage-desc">${stage.desc}</div>
+    <div class="remaining-label">🧪 현재 혼합물 구성</div>
+    <div class="remaining">${stage.removed.map(s=>`<span class="substance-tag removed">${s}</span>`).join('')}${stage.remaining.map(s=>`<span class="substance-tag">${s}</span>`).join('')}</div>
+    <div class="drop-zones">${stage.slots.map((slot,i)=>`<div class="drop-zone-row"><div class="drop-label">${slot.label}</div><div class="drop-zone" id="dropZone${i}" data-index="${i}" data-answer="${slot.answer}"><span class="placeholder">카드를 여기에 놓으세요</span></div></div>`).join('')}</div>
+    <div class="cards-area" id="cardsArea">${shuffled.map(c=>`<div class="drag-card" draggable="true" data-value="${c}">${c}</div>`).join('')}</div>
+    <div class="btn-row"><button class="btn hint" id="btnHint" onclick="showHint()">💡 힌트</button><button class="btn primary" id="btnCheck" disabled onclick="checkAnswer()">정답 확인</button></div>
+    <div class="hint-box" id="hintBox"></div>
+    <div class="feedback" id="feedback"></div>
+  </div>`;
+  stageStartTime=Date.now();
+  setupDragAndDrop();
+}
+function showHint(){
+  const sd=stageData[currentStage],stage=STAGES[currentStage];
+  if(sd.hintUsed>=stage.hints.length)return;
+  const hb=document.getElementById('hintBox');
+  sd.hintUsed++;
+  hb.innerHTML=`<div class="hint-title">힌트 ${sd.hintUsed}/${stage.hints.length}</div>${stage.hints[sd.hintUsed-1]}`;
+  hb.classList.add('show');
+  if(sd.hintUsed>=stage.hints.length)document.getElementById('btnHint').disabled=true;
+}
+function setupDragAndDrop(){
+  document.querySelectorAll('.drag-card').forEach(card=>{
+    card.addEventListener('dragstart',e=>{dragData=card.dataset.value;card.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',card.dataset.value);});
+    card.addEventListener('dragend',()=>{card.classList.remove('dragging');dragData=null;});
+    card.addEventListener('touchstart',handleTS,{passive:false});
+    card.addEventListener('touchmove',handleTM,{passive:false});
+    card.addEventListener('touchend',handleTE,{passive:false});
+  });
+  document.querySelectorAll('.drop-zone').forEach(zone=>{
+    zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over');});
+    zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
+    zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');dropCard(zone,dragData);});
+    zone.addEventListener('click',()=>{
+      const p=zone.querySelector('.dropped-card');
+      if(p&&!zone.classList.contains('correct')){
+        const v=p.dataset.value;
+        zone.innerHTML='<span class="placeholder">카드를 여기에 놓으세요</span>';
+        document.querySelectorAll('#cardsArea .drag-card').forEach(c=>{if(c.dataset.value===v)c.classList.remove('placed');});
+        updateCheckBtn();
+      }
+    });
+  });
+}
+function handleTS(e){e.preventDefault();const c=e.currentTarget;if(c.classList.contains('placed'))return;touchDragEl=c;dragData=c.dataset.value;c.classList.add('dragging');ghostEl=document.createElement('div');ghostEl.className='drag-ghost';ghostEl.textContent=c.textContent;document.body.appendChild(ghostEl);const t=e.touches[0];ghostEl.style.left=t.clientX+'px';ghostEl.style.top=t.clientY+'px';}
+function handleTM(e){e.preventDefault();if(!ghostEl)return;const t=e.touches[0];ghostEl.style.left=t.clientX+'px';ghostEl.style.top=t.clientY+'px';document.querySelectorAll('.drop-zone').forEach(z=>{const r=z.getBoundingClientRect();z.classList.toggle('drag-over',t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom);});}
+function handleTE(e){e.preventDefault();if(!ghostEl)return;ghostEl.remove();ghostEl=null;if(touchDragEl)touchDragEl.classList.remove('dragging');const t=e.changedTouches[0];document.querySelectorAll('.drop-zone').forEach(z=>{z.classList.remove('drag-over');const r=z.getBoundingClientRect();if(t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom)dropCard(z,dragData);});touchDragEl=null;dragData=null;}
+function dropCard(zone,value){
+  if(!value||zone.classList.contains('correct'))return;
+  const existing=zone.querySelector('.dropped-card');
+  if(existing){const ov=existing.dataset.value;document.querySelectorAll('.drag-card').forEach(c=>{if(c.dataset.value===ov)c.classList.remove('placed');});}
+  zone.innerHTML=`<div class="dropped-card drag-card placed" data-value="${value}">${value}</div>`;
+  document.querySelectorAll('#cardsArea .drag-card').forEach(c=>{if(c.dataset.value===value)c.classList.add('placed');});
+  updateCheckBtn();
+}
+function updateCheckBtn(){
+  let ok=true;document.querySelectorAll('.drop-zone').forEach(z=>{if(!z.querySelector('.dropped-card'))ok=false;});
+  document.getElementById('btnCheck').disabled=!ok;
+}
+function checkAnswer(){
+  const stage=STAGES[currentStage],zones=document.querySelectorAll('.drop-zone');
+  let allCorrect=true;
+  zones.forEach((z,i)=>{
+    const p=z.querySelector('.dropped-card');
+    if(p&&p.dataset.value===stage.slots[i].answer){z.classList.add('correct');}
+    else{z.classList.add('wrong');allCorrect=false;setTimeout(()=>z.classList.remove('wrong'),500);}
+  });
+  const fb=document.getElementById('feedback');fb.classList.add('show');
+  if(allCorrect){
+    stageData[currentStage].time=Math.floor((Date.now()-stageStartTime)/1000);
+    fb.className='feedback show correct';fb.innerHTML=`✅ 정답! ${stage.explanation}`;
+    document.getElementById('hintBox').classList.remove('show');
+    document.getElementById('btnHint').style.display='none';
+    miniConfetti();
+    const btn=document.getElementById('btnCheck');
+    if(currentStage<STAGES.length-1){btn.className='btn next';btn.textContent='다음 단계로 →';btn.disabled=false;btn.onclick=nextStage;}
+    else{btn.className='btn next';btn.textContent='결과 보기 🎉';btn.disabled=false;btn.onclick=showCompletion;}
+  }else{
+    stageData[currentStage].wrongCount++;
+    const wc=stageData[currentStage].wrongCount;
+    let msg=`❌ ${wc}번째 오답! `;
+    if(wc===1)msg+='다시 한번 생각해 보세요.';
+    else if(wc===2)msg+='힌트를 활용해 보세요! 💡';
+    else msg+='힌트 버튼을 눌러 정답에 가까운 도움을 받으세요.';
+    fb.className='feedback show wrong';fb.innerHTML=msg;
+    setTimeout(()=>{
+      fb.classList.remove('show');
+      zones.forEach(z=>{if(!z.classList.contains('correct')){const p=z.querySelector('.dropped-card');if(p){const v=p.dataset.value;z.innerHTML='<span class="placeholder">카드를 여기에 놓으세요</span>';document.querySelectorAll('#cardsArea .drag-card').forEach(c=>{if(c.dataset.value===v)c.classList.remove('placed');});}}});
+      updateCheckBtn();
+    },1200);
+  }
+}
+function nextStage(){currentStage++;renderProgress();renderStage();window.scrollTo({top:0,behavior:'smooth'});}
+
+function showCompletion(){
+  clearInterval(timerInterval);
+  totalElapsed=Math.floor((Date.now()-startTime)/1000);
+  document.getElementById('quizArea').innerHTML='';
+  document.getElementById('timerDisplay').style.display='none';
+  renderProgress();
+
+  const totalWrong=stageData.reduce((a,d)=>a+d.wrongCount,0);
+  const totalHints=stageData.reduce((a,d)=>a+d.hintUsed,0);
+  const perfectStages=stageData.filter(d=>d.wrongCount===0&&d.hintUsed===0).length;
+  const fastestIdx=stageData.reduce((mi,d,i,a)=>d.time<a[mi].time?i:mi,0);
+  const slowestIdx=stageData.reduce((mi,d,i,a)=>d.time>a[mi].time?i:mi,0);
+  const hardestIdx=stageData.reduce((mi,d,i,a)=>(d.wrongCount+d.hintUsed)>(a[mi].wrongCount+a[mi].hintUsed)?i:mi,0);
+  const hardest=stageData[hardestIdx];
+
+  let gradeClass,gradeText,gradeComment;
+  if(totalWrong===0&&totalHints===0){gradeClass='perfect';gradeText='🏅 완벽한 과학자!';gradeComment='힌트 없이 한 번에 모두 맞혔어요! 혼합물 분리의 달인이네요!';}
+  else if(totalWrong<=2&&totalHints<=2){gradeClass='great';gradeText='🔬 우수한 실험자!';gradeComment='거의 다 맞혔어요! 물질의 특성을 잘 이해하고 있네요.';}
+  else if(totalWrong<=5){gradeClass='good';gradeText='🧪 성장하는 탐구자!';gradeComment='좋은 시도였어요! 틀린 부분을 복습하면 금방 마스터할 수 있어요.';}
+  else{gradeClass='tryagain';gradeText='📚 도전하는 학습자!';gradeComment='어려웠지만 끝까지 완료했어요! 교과서를 다시 한번 읽어보면 도움이 될 거예요.';}
+
+  let diffHTML='';
+  if(hardest.wrongCount>0||hardest.hintUsed>0){
+    const hs=STAGES[hardestIdx];
+    diffHTML=`<div class="difficulty-box"><div class="diff-title">📊 가장 어려워한 단계: ${hs.stage}단계</div><div class="diff-text"><strong>${hs.slots.map(s=>s.answer).join(' / ')}</strong><br>${hs.explanation}<br>(오답 ${hardest.wrongCount}회, 힌트 ${hardest.hintUsed}회 사용)</div></div>`;
+  }
+
+  // Fun facts
+  const avgTime=Math.round(totalElapsed/5);
+  let funFacts=`<div class="fun-facts"><div class="ff-title">🎲 재미있는 기록</div>`;
+  funFacts+=`<div class="ff-item"><div class="ff-icon">⚡</div>가장 빠르게 푼 단계: <strong>${STAGES[fastestIdx].stage}단계</strong> (${formatTime(stageData[fastestIdx].time)})</div>`;
+  funFacts+=`<div class="ff-item"><div class="ff-icon">🐢</div>가장 오래 걸린 단계: <strong>${STAGES[slowestIdx].stage}단계</strong> (${formatTime(stageData[slowestIdx].time)})</div>`;
+  funFacts+=`<div class="ff-item"><div class="ff-icon">📊</div>단계 평균 소요 시간: <strong>${formatTime(avgTime)}</strong></div>`;
+  if(perfectStages>0)funFacts+=`<div class="ff-item"><div class="ff-icon">⭐</div>한 번에 맞힌 단계: <strong>${perfectStages}개</strong></div>`;
+  if(totalWrong===0&&totalHints===0)funFacts+=`<div class="ff-item"><div class="ff-icon">🎯</div><strong>올 퍼펙트!</strong> 힌트도, 오답도 없는 완벽한 기록!</div>`;
+  funFacts+=`</div>`;
+
+  const now=new Date();
+  const dateStr=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+
+  const comp=document.getElementById('completion');
+  comp.innerHTML=`<div class="result-card" id="resultCard">
+    <div class="result-header"><div class="trophy">${totalWrong===0&&totalHints===0?'🏆':'🧪'}</div><h2>혼합물 분리 실험 완료!</h2><div class="date-text">${dateStr}</div></div>
+    <div class="grade-section"><div class="grade-badge ${gradeClass}">${gradeText}</div><div class="grade-comment">${gradeComment}</div></div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-icon">⏱</div><div class="stat-value">${formatTime(totalElapsed)}</div><div class="stat-label">총 소요 시간</div></div>
+      <div class="stat-box"><div class="stat-icon">❌</div><div class="stat-value">${totalWrong}회</div><div class="stat-label">총 오답 횟수</div></div>
+      <div class="stat-box"><div class="stat-icon">💡</div><div class="stat-value">${totalHints}회</div><div class="stat-label">힌트 사용</div></div>
+    </div>
+    ${diffHTML}
+    <div class="stage-results"><div class="sr-title">단계별 결과</div>
+      ${STAGES.map((s,i)=>{const d=stageData[i];const isHard=i===hardestIdx&&(d.wrongCount>0||d.hintUsed>0);const status=d.wrongCount===0&&d.hintUsed===0?'⭐':d.wrongCount===0?'✅':'🔄';return`<div class="sr-row${isHard?' hard':''}"><div class="sr-stage" style="color:${s.color}">STAGE ${s.stage}</div><div class="sr-content"><strong>${s.slots.map(sl=>sl.answer).join(' · ')}</strong><br>오답 ${d.wrongCount}회 · 힌트 ${d.hintUsed}회 · ${formatTime(d.time)}</div><div class="sr-status">${status}</div></div>`;}).join('')}
+    </div>
+    ${funFacts}
+    <div class="result-footer"><div class="brand-mark">SONG SSAEM SCIENCE · 송쌤과학</div></div>
+  </div>
+  <div class="result-buttons"><button class="btn-restart" onclick="init()">다시 도전하기</button><button class="btn-capture" onclick="captureResult()">📸 결과 캡처하기</button></div>`;
+  comp.classList.add('show');
+  bigConfetti();
+}
+
+async function captureResult(){
+  const card=document.getElementById('resultCard');
+  try{
+    if(!window.html2canvas){const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';document.head.appendChild(s);await new Promise((r,j)=>{s.onload=r;s.onerror=j;});}
+    const canvas=await html2canvas(card,{backgroundColor:'#0f1729',scale:2,useCORS:true,logging:false});
+    const link=document.createElement('a');link.download='송쌤과학_혼합물분리_결과.png';link.href=canvas.toDataURL('image/png');link.click();
+    showToast('📸 결과 이미지가 저장되었습니다!');
+  }catch(err){showToast('길게 눌러 스크린샷을 저장해 주세요.');}
+}
+function showToast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);}
+function miniConfetti(){const c=['#4fc3f7','#ab47bc','#ff7043','#66bb6a','#ffa726','#ec407a','#ffd54f'];for(let i=0;i<20;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=(30+Math.random()*40)+'vw';p.style.top='-10px';p.style.background=c[Math.floor(Math.random()*c.length)];p.style.animationDelay=(Math.random()*.3)+'s';p.style.animationDuration=(1+Math.random())+'s';document.body.appendChild(p);setTimeout(()=>p.remove(),2000);}}
+function bigConfetti(){const c=['#4fc3f7','#ab47bc','#ff7043','#66bb6a','#ffa726','#ec407a','#ffd54f','#fff'];for(let i=0;i<60;i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=(Math.random()*100)+'vw';p.style.top='-10px';p.style.width=(6+Math.random()*8)+'px';p.style.height=(6+Math.random()*8)+'px';p.style.background=c[Math.floor(Math.random()*c.length)];p.style.animationDelay=(Math.random()*.8)+'s';p.style.animationDuration=(1.5+Math.random()*1.5)+'s';document.body.appendChild(p);setTimeout(()=>p.remove(),4000);}}
+
+init();
+</script>
+</body>
+</html>
