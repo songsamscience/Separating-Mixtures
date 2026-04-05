@@ -3,256 +3,622 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>송쌤과학 | 혼합물 분리 실험 퀴즈</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+<title>송쌤과학 | 혼합물 분리 미션</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Orbitron:wght@600;800;900&family=Black+Han+Sans&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0f1729;
-  --card-bg: #1a2744;
-  --card-border: #2a3d66;
-  --accent: #4fc3f7;
-  --accent-glow: rgba(79,195,247,0.3);
-  --success: #66bb6a;
-  --success-glow: rgba(102,187,106,0.3);
-  --error: #ef5350;
-  --error-glow: rgba(239,83,80,0.3);
-  --text: #e8eaf6;
-  --text-dim: #8090b8;
-  --drop-zone: #1e3050;
-  --drop-hover: #253d60;
-  --gold: #ffd54f;
-  --hint-bg: rgba(255,213,79,0.08);
-  --hint-border: rgba(255,213,79,0.25);
+  --bg: #080c18;
+  --card-bg: #111a30;
+  --card-border: #1e2d50;
+  --accent: #00e5ff;
+  --accent2: #7c4dff;
+  --accent-glow: rgba(0,229,255,0.25);
+  --accent2-glow: rgba(124,77,255,0.25);
+  --success: #00e676;
+  --success-glow: rgba(0,230,118,0.25);
+  --error: #ff1744;
+  --error-glow: rgba(255,23,68,0.3);
+  --warn: #ffab00;
+  --warn-glow: rgba(255,171,0,0.2);
+  --text: #e4e8f7;
+  --text-dim: #6b7da8;
+  --gold: #ffd740;
+  --drop-zone: #0e1a32;
+  --drop-hover: #162844;
 }
 *{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(79,195,247,.06) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(171,71,188,.06) 0%,transparent 50%);pointer-events:none;z-index:0}
-.container{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:20px 16px 40px}
-.header{text-align:center;margin-bottom:20px}
-.header .brand{font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
-.header h1{font-size:24px;font-weight:900;background:linear-gradient(135deg,#4fc3f7,#ab47bc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3}
-.header .subtitle{font-size:12px;color:var(--text-dim);margin-top:4px}
-.timer-display{text-align:center;margin-bottom:16px;font-family:'Outfit',sans-serif;font-size:14px;color:var(--text-dim);letter-spacing:1px}
-.timer-display span{color:var(--accent);font-weight:800;font-size:18px}
-.progress-bar{display:flex;gap:6px;margin-bottom:20px}
-.progress-step{flex:1;height:6px;border-radius:3px;background:var(--card-border);transition:all .5s}
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse at 15% 10%,rgba(0,229,255,.04) 0%,transparent 50%),
+  radial-gradient(ellipse at 85% 90%,rgba(124,77,255,.04) 0%,transparent 50%),
+  radial-gradient(ellipse at 50% 50%,rgba(0,230,118,.02) 0%,transparent 40%);
+  pointer-events:none;z-index:0}
+
+/* Scan-lines */
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(
+  0deg,transparent,transparent 2px,rgba(0,229,255,.012) 2px,rgba(0,229,255,.012) 4px);
+  pointer-events:none;z-index:0}
+
+.container{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:20px 16px 50px}
+
+/* ===== HEADER ===== */
+.header{text-align:center;margin-bottom:10px;position:relative}
+.header .brand{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:5px;text-transform:uppercase;margin-bottom:2px;opacity:.7}
+.header h1{font-family:'Black Han Sans',sans-serif;font-size:30px;color:#fff;line-height:1.3;text-shadow:0 0 30px var(--accent-glow),0 0 60px rgba(0,229,255,.1)}
+.header h1 .em{color:var(--accent)}
+.header .subtitle{font-size:12px;color:var(--text-dim);margin-top:4px;letter-spacing:1px}
+
+/* ===== MISSION BRIEFING ===== */
+.mission-briefing{background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(124,77,255,.06));
+  border:1px solid rgba(0,229,255,.15);border-radius:16px;padding:18px 20px;margin-bottom:16px;
+  position:relative;overflow:hidden}
+.mission-briefing::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:.6}
+.mission-briefing .mb-label{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:800;
+  color:var(--accent);letter-spacing:3px;margin-bottom:6px}
+.mission-briefing .mb-text{font-size:13px;color:var(--text-dim);line-height:1.7}
+.mission-briefing .mb-text strong{color:var(--text)}
+.mission-briefing .mb-substances{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.mission-briefing .mb-sub{font-size:12px;padding:5px 14px;background:rgba(0,229,255,.08);
+  border:1px solid rgba(0,229,255,.2);border-radius:20px;color:var(--accent);font-weight:700;
+  position:relative;overflow:hidden}
+.mission-briefing .mb-sub.cleared{background:rgba(0,230,118,.08);border-color:rgba(0,230,118,.2);
+  color:var(--success);text-decoration:line-through;opacity:.5}
+.mb-sub .pulse-ring{position:absolute;inset:-2px;border-radius:22px;border:2px solid var(--accent);
+  animation:pulseRing 2s infinite;opacity:0}
+@keyframes pulseRing{0%{transform:scale(1);opacity:.4}100%{transform:scale(1.3);opacity:0}}
+
+/* ===== HUD ===== */
+.hud{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;
+  padding:10px 16px;background:rgba(0,0,0,.3);border:1px solid var(--card-border);border-radius:14px}
+.hud-left{display:flex;align-items:center;gap:12px}
+.hud-timer{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:800;color:var(--accent);
+  letter-spacing:2px;text-shadow:0 0 10px var(--accent-glow)}
+.hud-stage{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:600;color:var(--text-dim);
+  letter-spacing:2px}
+.hud-right{display:flex;align-items:center;gap:8px}
+.hud-lives{display:flex;gap:3px}
+.hud-heart{font-size:16px;transition:all .3s}
+.hud-heart.lost{opacity:.15;transform:scale(.8);filter:grayscale(1)}
+.hud-combo{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:800;color:var(--gold);
+  letter-spacing:1px;opacity:0;transition:opacity .3s}
+.hud-combo.show{opacity:1}
+.sound-toggle{background:none;border:1px solid var(--card-border);border-radius:8px;
+  padding:4px 8px;color:var(--text-dim);font-size:14px;cursor:pointer;transition:all .2s}
+.sound-toggle:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ===== PROGRESS ===== */
+.progress-bar{display:flex;gap:4px;margin-bottom:16px}
+.progress-step{flex:1;height:5px;border-radius:3px;background:var(--card-border);transition:all .6s;position:relative;overflow:hidden}
 .progress-step.completed{background:var(--success);box-shadow:0 0 8px var(--success-glow)}
-.progress-step.active{background:var(--accent);box-shadow:0 0 8px var(--accent-glow);animation:pulse-bar 1.5s infinite}
-@keyframes pulse-bar{0%,100%{opacity:1}50%{opacity:.6}}
-.stage-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;padding:24px 20px;margin-bottom:20px;position:relative;overflow:hidden;animation:fadeSlideIn .5s ease}
-.stage-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--stage-color,var(--accent)),transparent)}
-@keyframes fadeSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.stage-number{font-family:'Outfit',sans-serif;font-size:12px;font-weight:800;color:var(--stage-color,var(--accent));letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
-.stage-question{font-size:17px;font-weight:700;line-height:1.5;margin-bottom:4px}
-.stage-desc{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:16px}
+.progress-step.active{background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
+.progress-step.active::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer 1.5s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+/* ===== STAGE CARD ===== */
+.stage-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:20px;
+  padding:24px 20px;margin-bottom:16px;position:relative;overflow:hidden;
+  animation:stageEnter .6s cubic-bezier(.16,1,.3,1)}
+.stage-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--stage-color,var(--accent)),var(--accent2))}
+.stage-card::after{content:'';position:absolute;inset:0;border-radius:20px;
+  box-shadow:inset 0 0 60px rgba(0,0,0,.3);pointer-events:none}
+@keyframes stageEnter{0%{opacity:0;transform:translateY(30px) scale(.97)}100%{opacity:1;transform:translateY(0) scale(1)}}
+
+.stage-number{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;
+  color:var(--stage-color,var(--accent));letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
+.stage-question{font-family:'Black Han Sans',sans-serif;font-size:20px;line-height:1.4;margin-bottom:4px;
+  color:#fff}
+.stage-desc{font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:16px}
 .stage-desc strong{color:var(--text);font-weight:700}
-.remaining-label{font-size:11px;color:var(--text-dim);margin-bottom:6px;font-weight:500}
-.remaining{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
-.substance-tag{font-size:11px;padding:4px 10px;background:rgba(79,195,247,.1);border:1px solid rgba(79,195,247,.2);border-radius:20px;color:var(--accent);font-weight:500;word-break:keep-all;white-space:nowrap}
-.substance-tag.removed{background:rgba(102,187,106,.1);border-color:rgba(102,187,106,.2);color:var(--success);text-decoration:line-through;opacity:.5}
+
+/* ===== COUNTDOWN OVERLAY ===== */
+.countdown-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
+  background:rgba(8,12,24,.92);backdrop-filter:blur(10px)}
+.countdown-number{font-family:'Orbitron',sans-serif;font-size:100px;font-weight:900;
+  color:var(--accent);text-shadow:0 0 40px var(--accent-glow),0 0 80px rgba(0,229,255,.2);
+  animation:countPop .5s ease}
+.countdown-text{font-family:'Black Han Sans',sans-serif;font-size:28px;color:#fff;
+  text-shadow:0 0 20px var(--accent-glow);animation:countPop .5s ease}
+@keyframes countPop{0%{transform:scale(2);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+
+/* ===== DROP ZONES ===== */
 .drop-zones{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .drop-zone-row{display:flex;align-items:center;gap:10px}
-.drop-label{font-size:12px;font-weight:700;color:var(--text-dim);min-width:90px;text-align:right;flex-shrink:0;word-break:keep-all;white-space:nowrap}
-.drop-zone{flex:1;min-height:50px;background:var(--drop-zone);border:2px dashed var(--card-border);border-radius:14px;display:flex;align-items:center;justify-content:center;padding:8px 12px;transition:all .25s;cursor:pointer}
-.drop-zone.drag-over{border-color:var(--accent);background:var(--drop-hover);box-shadow:0 0 16px var(--accent-glow);transform:scale(1.02)}
-.drop-zone.correct{border-color:var(--success);border-style:solid;background:rgba(102,187,106,.08)}
-.drop-zone.wrong{border-color:var(--error);animation:shake .4s}
-.drop-zone .placeholder{font-size:12px;color:var(--text-dim);opacity:.5}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-.cards-area{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:50px;padding:12px;background:rgba(255,255,255,.02);border-radius:14px;border:1px solid rgba(255,255,255,.04)}
-.drag-card{padding:10px 16px;background:linear-gradient(135deg,var(--card-bg),#223358);border:1.5px solid var(--card-border);border-radius:12px;font-size:13px;font-weight:700;color:var(--text);cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;transition:all .2s;white-space:nowrap;word-break:keep-all}
+.drop-label{font-size:12px;font-weight:700;color:var(--text-dim);min-width:95px;text-align:right;flex-shrink:0}
+.drop-zone{flex:1;min-height:52px;background:var(--drop-zone);border:2px dashed rgba(0,229,255,.2);
+  border-radius:14px;display:flex;align-items:center;justify-content:center;padding:8px 12px;
+  transition:all .25s;cursor:pointer;position:relative}
+.drop-zone .placeholder{font-size:12px;color:var(--text-dim);opacity:.4}
+.drop-zone.drag-over{border-color:var(--accent);border-style:solid;background:var(--drop-hover);
+  box-shadow:0 0 20px var(--accent-glow);transform:scale(1.02)}
+.drop-zone.correct{border-color:var(--success);border-style:solid;background:rgba(0,230,118,.06);
+  box-shadow:0 0 12px var(--success-glow)}
+.drop-zone.wrong{border-color:var(--error);border-style:solid;animation:shake .45s}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+
+/* ===== CARDS ===== */
+.cards-area{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:54px;
+  padding:14px;background:rgba(255,255,255,.015);border-radius:14px;border:1px solid rgba(255,255,255,.03)}
+.drag-card{padding:10px 16px;background:linear-gradient(135deg,#141e38,#1a2848);
+  border:1.5px solid var(--card-border);border-radius:12px;font-size:13px;font-weight:700;
+  color:var(--text);cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;
+  transition:all .2s;white-space:nowrap;position:relative;overflow:hidden}
+.drag-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,
+  rgba(0,229,255,.05),transparent);opacity:0;transition:opacity .2s}
+.drag-card:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(0,0,0,.4),0 0 10px var(--accent-glow);
+  transform:translateY(-3px)}
+.drag-card:hover::before{opacity:1}
 .drag-card:active{cursor:grabbing}
-.drag-card:hover{border-color:var(--accent);box-shadow:0 4px 16px rgba(0,0,0,.3);transform:translateY(-2px)}
-.drag-card.dragging{opacity:.4;transform:scale(.95)}
-.drag-card.placed{background:linear-gradient(135deg,rgba(102,187,106,.15),rgba(102,187,106,.05));border-color:var(--success);color:var(--success);pointer-events:none}
-.drag-ghost{position:fixed;pointer-events:none;z-index:9999;padding:10px 16px;background:linear-gradient(135deg,#2a4070,#1a2744);border:2px solid var(--accent);border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 20px var(--accent-glow);font-family:'Noto Sans KR',sans-serif;transform:translate(-50%,-50%) scale(1.05);white-space:nowrap;word-break:keep-all}
+.drag-card.dragging{opacity:.3;transform:scale(.9)}
+.drag-card.placed{background:linear-gradient(135deg,rgba(0,230,118,.1),rgba(0,230,118,.03));
+  border-color:rgba(0,230,118,.3);color:var(--success);pointer-events:none}
+.drag-ghost{position:fixed;pointer-events:none;z-index:9999;padding:10px 16px;
+  background:linear-gradient(135deg,#1a2848,#0e1a32);border:2px solid var(--accent);
+  border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);
+  box-shadow:0 8px 40px rgba(0,0,0,.6),0 0 30px var(--accent-glow);
+  font-family:'Noto Sans KR',sans-serif;transform:translate(-50%,-50%) scale(1.08);white-space:nowrap}
+
+/* ===== BUTTONS ===== */
 .btn-row{display:flex;gap:8px;margin-top:14px}
-.btn{flex:1;padding:13px;border:none;border-radius:14px;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s}
-.btn.primary{background:linear-gradient(135deg,var(--accent),#039be5);color:#fff;box-shadow:0 4px 16px var(--accent-glow)}
-.btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 24px var(--accent-glow)}
-.btn:disabled{background:var(--card-border)!important;color:var(--text-dim)!important;cursor:default!important;box-shadow:none!important;transform:none!important;border:none!important}
-.btn.next{background:linear-gradient(135deg,var(--success),#43a047);color:#fff;box-shadow:0 4px 16px var(--success-glow)}
-.btn.hint{background:transparent;border:1.5px solid var(--gold);color:var(--gold);flex:0 0 auto;padding:13px 20px}
-.btn.hint:hover{background:rgba(255,213,79,.1)}
-.hint-box{margin-top:10px;padding:12px 16px;border-radius:12px;background:var(--hint-bg);border:1px solid var(--hint-border);font-size:12px;line-height:1.6;color:var(--gold);display:none}
-.hint-box.show{display:block;animation:fadeSlideIn .3s ease}
+.btn{flex:1;padding:14px;border:none;border-radius:14px;font-family:'Noto Sans KR',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.btn.primary{background:linear-gradient(135deg,var(--accent),#0091ea);color:#000;
+  box-shadow:0 4px 20px var(--accent-glow);font-weight:800}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 6px 30px var(--accent-glow)}
+.btn:disabled{background:var(--card-border)!important;color:var(--text-dim)!important;
+  cursor:default!important;box-shadow:none!important;transform:none!important;border:none!important}
+.btn.next{background:linear-gradient(135deg,var(--success),#00c853);color:#000;
+  box-shadow:0 4px 20px var(--success-glow);font-weight:800}
+.btn.hint{background:transparent;border:1.5px solid var(--gold);color:var(--gold);flex:0 0 auto;padding:14px 20px}
+.btn.hint:hover{background:rgba(255,215,64,.08)}
+
+/* ===== HINT & FEEDBACK ===== */
+.hint-box{margin-top:10px;padding:12px 16px;border-radius:12px;
+  background:rgba(255,215,64,.06);border:1px solid rgba(255,215,64,.2);
+  font-size:12px;line-height:1.7;color:var(--gold);display:none}
+.hint-box.show{display:block;animation:fadeIn .3s ease}
 .hint-box .hint-title{font-weight:700;margin-bottom:4px;font-size:13px}
-.feedback{margin-top:10px;padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.6;font-weight:500;display:none}
-.feedback.show{display:block;animation:fadeSlideIn .3s ease}
-.feedback.correct{background:rgba(102,187,106,.1);border:1px solid rgba(102,187,106,.3);color:var(--success)}
-.feedback.wrong{background:rgba(239,83,80,.1);border:1px solid rgba(239,83,80,.3);color:var(--error)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.feedback{margin-top:10px;padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.7;
+  font-weight:500;display:none}
+.feedback.show{display:block;animation:fadeIn .3s ease}
+.feedback.correct{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.25);color:var(--success)}
+.feedback.wrong{background:rgba(255,23,68,.08);border:1px solid rgba(255,23,68,.25);color:var(--error)}
+
+/* ===== FLOATING SCORE ===== */
+.float-score{position:fixed;z-index:9998;font-family:'Orbitron',sans-serif;font-weight:900;
+  font-size:24px;pointer-events:none;animation:floatUp 1s ease forwards}
+.float-score.plus{color:var(--success);text-shadow:0 0 12px var(--success-glow)}
+.float-score.minus{color:var(--error);text-shadow:0 0 12px var(--error-glow)}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-60px) scale(1.3)}}
+
+/* ===== SCREEN FLASH ===== */
+.screen-flash{position:fixed;inset:0;z-index:9997;pointer-events:none;animation:flash .3s ease forwards}
+.screen-flash.green{background:rgba(0,230,118,.1)}
+.screen-flash.red{background:rgba(255,23,68,.1)}
+@keyframes flash{0%{opacity:1}100%{opacity:0}}
+
+/* ===== SEPARATION ANIMATION ===== */
+.separation-anim{position:relative;margin:16px auto;width:120px;height:160px;display:none}
+.separation-anim.show{display:block;animation:fadeIn .5s ease}
+.beaker{width:100px;height:140px;margin:0 auto;border:3px solid rgba(0,229,255,.3);
+  border-top:none;border-radius:0 0 12px 12px;position:relative;overflow:hidden;
+  background:rgba(0,229,255,.03)}
+.beaker-liquid{position:absolute;bottom:0;left:0;right:0;transition:height 1s ease;border-radius:0 0 9px 9px}
+
 /* ===== COMPLETION ===== */
 .completion{display:none}
 .completion.show{display:block}
-.result-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:24px;padding:28px 20px;position:relative;overflow:hidden}
-.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#4fc3f7,#ab47bc,#ff7043,#66bb6a,#ffa726)}
+.result-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:24px;
+  padding:28px 20px;position:relative;overflow:hidden}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2),var(--success),var(--gold),#ff6d00)}
 .result-header{text-align:center;margin-bottom:20px}
-.result-header .trophy{font-size:52px;margin-bottom:8px}
-.result-header h2{font-size:22px;font-weight:900;background:linear-gradient(135deg,var(--gold),#ff8f00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:4px}
+.result-header .trophy{font-size:56px;margin-bottom:8px}
+.result-header h2{font-family:'Black Han Sans',sans-serif;font-size:24px;color:var(--gold);
+  text-shadow:0 0 20px var(--warn-glow);margin-bottom:4px}
 .result-header .date-text{font-size:11px;color:var(--text-dim)}
 .grade-section{text-align:center;margin-bottom:20px}
 .grade-badge{display:inline-block;padding:8px 28px;border-radius:40px;font-size:15px;font-weight:800;letter-spacing:1px}
-.grade-badge.perfect{background:linear-gradient(135deg,rgba(255,213,79,.15),rgba(255,143,0,.15));border:2px solid var(--gold);color:var(--gold)}
-.grade-badge.great{background:linear-gradient(135deg,rgba(102,187,106,.15),rgba(67,160,71,.15));border:2px solid var(--success);color:var(--success)}
-.grade-badge.good{background:linear-gradient(135deg,rgba(79,195,247,.15),rgba(3,155,229,.15));border:2px solid var(--accent);color:var(--accent)}
-.grade-badge.tryagain{background:linear-gradient(135deg,rgba(255,167,38,.15),rgba(239,108,0,.15));border:2px solid #ffa726;color:#ffa726}
+.grade-badge.perfect{background:linear-gradient(135deg,rgba(255,215,64,.12),rgba(255,143,0,.12));border:2px solid var(--gold);color:var(--gold)}
+.grade-badge.great{background:linear-gradient(135deg,rgba(0,230,118,.12),rgba(0,200,83,.12));border:2px solid var(--success);color:var(--success)}
+.grade-badge.good{background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(0,145,234,.12));border:2px solid var(--accent);color:var(--accent)}
+.grade-badge.tryagain{background:linear-gradient(135deg,rgba(255,171,0,.12),rgba(239,108,0,.12));border:2px solid var(--warn);color:var(--warn)}
 .grade-comment{font-size:13px;color:var(--text-dim);margin-top:8px;line-height:1.5}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
-.stat-box{background:rgba(255,255,255,.03);border:1px solid var(--card-border);border-radius:14px;padding:14px 10px;text-align:center}
-.stat-box .stat-icon{font-size:22px;margin-bottom:4px}
-.stat-box .stat-value{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--accent);line-height:1.2}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.stat-box{background:rgba(255,255,255,.02);border:1px solid var(--card-border);border-radius:14px;padding:12px 8px;text-align:center}
+.stat-box .stat-icon{font-size:20px;margin-bottom:2px}
+.stat-box .stat-value{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:800;color:var(--accent);line-height:1.2}
 .stat-box .stat-label{font-size:10px;color:var(--text-dim);margin-top:2px;font-weight:500}
-.difficulty-box{background:rgba(255,167,38,.06);border:1px solid rgba(255,167,38,.2);border-radius:14px;padding:14px 16px;margin-bottom:20px}
-.difficulty-box .diff-title{font-size:13px;font-weight:700;color:#ffa726;margin-bottom:6px}
+.difficulty-box{background:rgba(255,171,0,.05);border:1px solid rgba(255,171,0,.18);
+  border-radius:14px;padding:14px 16px;margin-bottom:20px}
+.difficulty-box .diff-title{font-size:13px;font-weight:700;color:var(--warn);margin-bottom:6px}
 .difficulty-box .diff-text{font-size:12px;color:var(--text-dim);line-height:1.7}
 .difficulty-box .diff-text strong{color:var(--text)}
 .stage-results{margin-bottom:20px}
-.stage-results .sr-title{font-size:12px;font-weight:700;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.sr-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;margin-bottom:6px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)}
-.sr-row .sr-stage{font-family:'Outfit',sans-serif;font-size:11px;font-weight:800;letter-spacing:1px;min-width:60px;flex-shrink:0}
+.stage-results .sr-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;
+  color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.sr-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;
+  margin-bottom:6px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04)}
+.sr-row .sr-stage{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:1px;min-width:60px;flex-shrink:0}
 .sr-row .sr-content{flex:1;font-size:12px;color:var(--text-dim);line-height:1.4}
 .sr-row .sr-content strong{color:var(--text);font-weight:600}
 .sr-row .sr-status{font-size:18px;flex-shrink:0}
-.sr-row.hard{border-color:rgba(255,167,38,.3);background:rgba(255,167,38,.04)}
+.sr-row.hard{border-color:rgba(255,171,0,.25);background:rgba(255,171,0,.03)}
 .fun-facts{margin-bottom:20px}
-.fun-facts .ff-title{font-size:12px;font-weight:700;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.ff-item{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;margin-bottom:4px;background:rgba(255,255,255,.02);font-size:12px;color:var(--text-dim);line-height:1.4}
+.fun-facts .ff-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;
+  color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.ff-item{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;
+  margin-bottom:4px;background:rgba(255,255,255,.02);font-size:12px;color:var(--text-dim);line-height:1.4}
 .ff-item .ff-icon{font-size:18px;flex-shrink:0}
 .ff-item strong{color:var(--text)}
 .result-footer{text-align:center;padding-top:12px;border-top:1px solid var(--card-border)}
-.result-footer .brand-mark{font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:2px;opacity:.7}
+.result-footer .brand-mark{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:600;
+  color:var(--accent);letter-spacing:3px;opacity:.5}
+.result-footer .copyright{font-size:10px;color:var(--text-dim);margin-top:6px;opacity:.5}
+.sns-links{display:flex;gap:10px;justify-content:center;margin-top:10px}
+.sns-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;
+  font-family:'Noto Sans KR',sans-serif;font-size:12px;font-weight:700;text-decoration:none;
+  transition:all .25s;border:1px solid var(--card-border)}
+.sns-btn:hover{transform:translateY(-2px)}
+.sns-btn.youtube{color:#ff4444;border-color:rgba(255,68,68,.25);background:rgba(255,68,68,.06)}
+.sns-btn.youtube:hover{background:rgba(255,68,68,.12);box-shadow:0 4px 16px rgba(255,68,68,.15)}
+.sns-btn.instagram{color:#e040fb;border-color:rgba(224,64,251,.25);background:rgba(224,64,251,.06)}
+.sns-btn.instagram:hover{background:rgba(224,64,251,.12);box-shadow:0 4px 16px rgba(224,64,251,.15)}
+.sns-btn svg{width:16px;height:16px;flex-shrink:0}
+
+/* ===== GLOBAL FOOTER ===== */
+.global-footer{text-align:center;padding:24px 16px 10px;margin-top:10px}
+.global-footer .gf-brand{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:600;
+  color:var(--accent);letter-spacing:3px;opacity:.4;margin-bottom:6px}
+.global-footer .gf-copyright{font-size:10px;color:var(--text-dim);opacity:.4;margin-bottom:8px}
+.global-footer .gf-sns{display:flex;gap:10px;justify-content:center}
 .result-buttons{display:flex;gap:8px;margin-top:16px}
-.btn-restart{flex:1;padding:14px;border:2px solid var(--accent);border-radius:14px;background:transparent;color:var(--accent);font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s}
+.btn-restart{flex:1;padding:14px;border:2px solid var(--accent);border-radius:14px;
+  background:transparent;color:var(--accent);font-family:'Noto Sans KR',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;transition:all .3s}
 .btn-restart:hover{background:var(--accent);color:var(--bg)}
-.btn-capture{flex:1;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--accent),#039be5);color:#fff;font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .3s;box-shadow:0 4px 16px var(--accent-glow)}
-.btn-capture:hover{transform:translateY(-1px);box-shadow:0 6px 24px var(--accent-glow)}
-.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;z-index:9998;pointer-events:none;animation:confetti-fall 1.5s ease-out forwards}
-@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}100%{transform:translateY(80vh) rotate(720deg) scale(.3);opacity:0}}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--success);color:#fff;padding:12px 24px;border-radius:12px;font-size:13px;font-weight:700;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.4);animation:toastIn .3s ease;font-family:'Noto Sans KR',sans-serif}
-@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.btn-capture{flex:1;padding:14px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--accent),#0091ea);color:#000;
+  font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:800;
+  cursor:pointer;transition:all .3s;box-shadow:0 4px 20px var(--accent-glow)}
+.btn-capture:hover{transform:translateY(-2px);box-shadow:0 6px 30px var(--accent-glow)}
+
+/* ===== PARTICLES ===== */
+.particle{position:fixed;border-radius:50%;pointer-events:none;z-index:9996}
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;z-index:9998;
+  pointer-events:none;animation:confetti-fall 1.8s ease-out forwards}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}
+  100%{transform:translateY(85vh) rotate(720deg) scale(.2);opacity:0}}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+  background:var(--success);color:#000;padding:12px 24px;border-radius:12px;
+  font-size:13px;font-weight:700;z-index:9999;box-shadow:0 4px 24px rgba(0,0,0,.5);
+  animation:toastIn .3s ease;font-family:'Noto Sans KR',sans-serif}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}
+  to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ===== RESPONSIVE ===== */
 @media(max-width:480px){
-  .container{padding:14px 10px 30px}
-  .header h1{font-size:20px}
-  .stage-question{font-size:15px}
+  .container{padding:12px 10px 30px}
+  .header h1{font-size:24px}
+  .stage-question{font-size:17px}
   .drop-zone-row{flex-direction:column;align-items:stretch;gap:4px}
   .drop-label{text-align:left;min-width:auto;font-size:11px}
   .drag-card{padding:8px 12px;font-size:12px}
-  .stats-grid{gap:6px}
-  .stat-box{padding:10px 6px}
-  .stat-box .stat-value{font-size:18px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
   .result-buttons{flex-direction:column}
+  .hud{flex-wrap:wrap;gap:6px}
+  .countdown-number{font-size:70px}
 }
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
-    <div class="brand">송쌤과학 가상실험실</div>
-    <h1>혼합물 분리 실험 퀴즈</h1>
-    <div class="subtitle">카드를 끌어서 각 단계의 정답을 맞춰보세요!</div>
+    <div class="brand">SONG SSAEM SCIENCE</div>
+    <h1>혼합물 분리 <span class="em">미션</span></h1>
+    <div class="subtitle">6가지 물질이 섞인 혼합물을 단계별로 완벽 분리하라!</div>
   </div>
-  <div class="timer-display" id="timerDisplay">⏱ 경과 시간: <span id="timerValue">00:00</span></div>
+
+  <div class="mission-briefing" id="missionBriefing">
+    <div class="mb-label">⚠ MISSION BRIEFING</div>
+    <div class="mb-text">
+      실험실에 <strong>6가지 물질</strong>이 모두 뒤섞인 혼합물이 도착했습니다.<br>
+      물질의 <strong>특성</strong>을 이용하여 하나씩 분리해 내세요!<br>
+      오답 시 <strong>라이프</strong>가 줄어듭니다. 연속 정답 시 <strong>콤보 보너스!</strong>
+    </div>
+    <div class="mb-substances" id="mbSubstances"></div>
+  </div>
+
+  <div class="hud" id="hud">
+    <div class="hud-left">
+      <div class="hud-timer" id="timerValue">00:00</div>
+      <div class="hud-stage" id="hudStage">STAGE 1/5</div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-combo" id="hudCombo">🔥 COMBO x2</div>
+      <div class="hud-lives" id="hudLives"></div>
+      <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="사운드 ON/OFF">🔊</button>
+    </div>
+  </div>
+
   <div class="progress-bar" id="progressBar"></div>
   <div id="quizArea"></div>
   <div class="completion" id="completion"></div>
+
+  <div class="global-footer">
+    <div class="gf-brand">SONG SSAEM SCIENCE · 송쌤과학</div>
+    <div class="gf-copyright">© 2026 송쌤과학 All rights reserved.</div>
+    <div class="gf-sns">
+      <a href="https://www.youtube.com/@songsamscience" target="_blank" class="sns-btn youtube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>송쌤과학 유튜브</a>
+      <a href="https://www.instagram.com/songsamscience" target="_blank" class="sns-btn instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>송쌤과학 인스타</a>
+    </div>
+  </div>
 </div>
+
 <script>
+// ===== SOUND ENGINE (Web Audio API) =====
+const AudioCtx=window.AudioContext||window.webkitAudioContext;
+let audioCtx=null,soundEnabled=true;
+
+function ensureAudio(){if(!audioCtx)audioCtx=new AudioCtx();}
+
+function playTone(freq,type,dur,vol=0.15,decay=true){
+  if(!soundEnabled)return;ensureAudio();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);
+  g.gain.setValueAtTime(vol,audioCtx.currentTime);
+  if(decay)g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);
+  o.connect(g);g.connect(audioCtx.destination);
+  o.start();o.stop(audioCtx.currentTime+dur);
+}
+
+function sfx(name){
+  if(!soundEnabled)return;ensureAudio();
+  switch(name){
+    case 'pickup':
+      playTone(600,'sine',.08,.12);
+      setTimeout(()=>playTone(900,'sine',.06,.08),40);
+      break;
+    case 'drop':
+      playTone(400,'sine',.1,.1);
+      break;
+    case 'correct':
+      playTone(523,'sine',.12,.15);
+      setTimeout(()=>playTone(659,'sine',.12,.15),100);
+      setTimeout(()=>playTone(784,'sine',.2,.18),200);
+      setTimeout(()=>playTone(1047,'sine',.3,.12),320);
+      break;
+    case 'wrong':
+      playTone(200,'sawtooth',.15,.1);
+      setTimeout(()=>playTone(160,'sawtooth',.25,.12),100);
+      break;
+    case 'combo':
+      [523,659,784,1047,1319].forEach((f,i)=>{
+        setTimeout(()=>playTone(f,'sine',.15,.1),i*60);
+      });
+      break;
+    case 'countdown':
+      playTone(440,'square',.1,.08);
+      break;
+    case 'go':
+      playTone(880,'square',.08,.1);
+      setTimeout(()=>playTone(1760,'square',.15,.08),80);
+      break;
+    case 'hint':
+      playTone(800,'sine',.08,.06);
+      setTimeout(()=>playTone(600,'sine',.1,.06),80);
+      break;
+    case 'stageClear':
+      [523,587,659,784,880,1047].forEach((f,i)=>{
+        setTimeout(()=>playTone(f,'sine',.18,.12),i*80);
+      });
+      break;
+    case 'victory':
+      const melody=[523,523,523,659,784,659,784,1047];
+      melody.forEach((f,i)=>{
+        setTimeout(()=>playTone(f,'sine',.22,.12),i*120);
+      });
+      break;
+    case 'lifeLost':
+      playTone(300,'sawtooth',.3,.12);
+      setTimeout(()=>playTone(200,'sawtooth',.4,.1),150);
+      break;
+    case 'tick':
+      playTone(1200,'sine',.03,.04);
+      break;
+  }
+}
+
+function toggleSound(){
+  soundEnabled=!soundEnabled;
+  document.getElementById('soundToggle').textContent=soundEnabled?'🔊':'🔇';
+  if(soundEnabled)sfx('pickup');
+}
+
+// ===== GAME DATA =====
+const ALL_SUBSTANCES=['물','소금','올리브유','스타이로폼','플라스틱','에탄올'];
+
 const STAGES=[
-  {stage:1,color:'#4fc3f7',
-    question:'1단계: 가장 먼저 분리할 물질은?',
-    desc:'혼합물에 <strong>물, 소금, 올리브유, 스타이로폼, 플라스틱, 에탄올</strong>이 섞여 있습니다.',
+  {stage:1,color:'#00e5ff',
+    question:'STAGE 1 — 가장 먼저 분리할 물질을 찾아라!',
+    desc:'6가지 물질이 뒤섞인 혼합물입니다. 잘 관찰하고, <strong>가장 먼저 분리할 수 있는 물질</strong>을 골라내세요!',
+    target:'스타이로폼',
     remaining:['물','소금','올리브유','스타이로폼','플라스틱','에탄올'],removed:[],
     slots:[{label:'분리할 물질',answer:'스타이로폼'},{label:'이용한 특성',answer:'밀도'},{label:'분리 방법',answer:'건져냄(체)'}],
     cards:['스타이로폼','올리브유','플라스틱','밀도','끓는점','용해도','건져냄(체)','거름(여과)','증류'],
-    explanation:'스타이로폼은 밀도가 약 0.03g/cm³으로 매우 낮아 혼합물 표면에 떠오릅니다. 체나 핀셋으로 건져내면 됩니다.',
+    explanation:'스타이로폼은 밀도가 약 0.03 g/cm³으로 매우 낮아 혼합물 표면에 둥둥 떠오릅니다. 체나 핀셋으로 간단히 건져낼 수 있습니다!',
     hints:['💡 이 물질은 물 위에 둥둥 떠다니는 아주 가벼운 물질이에요.','💡 밀도가 매우 낮은 물질을 먼저 제거하면 이후 실험이 편해져요.','💡 정답: 스타이로폼 / 밀도 / 건져냄(체)']},
-  {stage:2,color:'#ab47bc',
-    question:'2단계: 물 위에 뜨는 액체를 분리하려면?',
-    desc:'스타이로폼을 제거한 후, <strong>물과 섞이지 않는 액체</strong>가 위에 떠 있습니다.',
+  {stage:2,color:'#7c4dff',
+    question:'STAGE 2 — 다음 물질을 분리해 봅시다!',
+    desc:'스타이로폼을 제거했습니다. 남은 혼합물을 관찰하고, <strong>다음으로 분리할 물질</strong>을 찾아보세요!',
+    target:'올리브유',
     remaining:['물','소금','올리브유','플라스틱','에탄올'],removed:['스타이로폼'],
     slots:[{label:'분리할 물질',answer:'올리브유'},{label:'이용한 특성',answer:'밀도'},{label:'분리 방법',answer:'분별깔때기'}],
     cards:['올리브유','플라스틱','소금','밀도','용해도','끓는점','분별깔때기','증발','거름(여과)'],
-    explanation:'올리브유(밀도 약 0.91g/cm³)는 물보다 가벼워 물 위에 뜹니다. 분별깔때기를 이용해 아래층 수용액을 빼내고 올리브유를 분리합니다.',
-    hints:['💡 식용유를 물에 넣으면 어떻게 되나요? 층이 나뉘죠!','💡 서로 섞이지 않는 두 액체를 분리하는 실험 도구를 생각해 보세요.','💡 정답: 올리브유 / 밀도 / 분별깔때기']},
-  {stage:3,color:'#ff7043',
-    question:'3단계: 녹지 않는 고체를 분리하려면?',
-    desc:'액체 속에 <strong>녹지 않는 고체</strong>가 남아 있습니다. 어떻게 분리할까요?',
+    explanation:'올리브유(밀도 약 0.91 g/cm³)는 물보다 가벼워 위층에 뜹니다. 분별깔때기로 아래쪽 수용액을 빼내면 올리브유만 남습니다!',
+    hints:['💡 식용유를 물에 넣으면 어떻게 되나요? 두 층으로 나뉘죠!','💡 서로 섞이지 않는 두 액체를 분리하는 유리 실험 도구는?','💡 정답: 올리브유 / 밀도 / 분별깔때기']},
+  {stage:3,color:'#ff6d00',
+    question:'STAGE 3 — 또 다른 물질을 분리해 봅시다!',
+    desc:'올리브유까지 제거했습니다. 남은 혼합물 속에서 <strong>다음 물질</strong>을 분리하세요!',
+    target:'플라스틱',
     remaining:['물','소금','플라스틱','에탄올'],removed:['스타이로폼','올리브유'],
     slots:[{label:'분리할 물질',answer:'플라스틱'},{label:'이용한 특성',answer:'용해도'},{label:'분리 방법',answer:'거름(여과)'}],
     cards:['플라스틱','에탄올','소금','용해도','밀도','끓는점','거름(여과)','증류','분별깔때기'],
-    explanation:'플라스틱은 물에 녹지 않는 불용성 고체입니다. 거름종이와 깔때기를 이용한 여과로 액체와 분리할 수 있습니다.',
+    explanation:'플라스틱은 물에 녹지 않는 불용성 고체입니다. 거름종이(여과지)와 깔때기를 이용한 여과로 액체와 깔끔하게 분리할 수 있습니다!',
     hints:['💡 이 물질은 물에 전혀 녹지 않는 고체예요.','💡 녹지 않는 고체를 액체에서 분리할 때 사용하는 종이가 있어요!','💡 정답: 플라스틱 / 용해도 / 거름(여과)']},
-  {stage:4,color:'#ffa726',
-    question:'4단계: 에탄올을 분리하려면?',
-    desc:'거른 액체에는 <strong>물, 소금, 에탄올</strong>이 남아 있습니다. 에탄올을 먼저 분리해 봅시다.',
+  {stage:4,color:'#ffab00',
+    question:'STAGE 4 — 남은 액체 속 물질을 분리해 봅시다!',
+    desc:'고체를 모두 제거한 투명한 액체가 남았습니다. <strong>어떤 물질</strong>을 먼저 분리할 수 있을까요?',
+    target:'에탄올',
     remaining:['물','소금','에탄올'],removed:['스타이로폼','올리브유','플라스틱'],
     slots:[{label:'분리할 물질',answer:'에탄올'},{label:'이용한 특성',answer:'끓는점'},{label:'분리 방법',answer:'증류'}],
     cards:['에탄올','소금','물','끓는점','밀도','용해도','증류','증발','분별깔때기'],
-    explanation:'에탄올의 끓는점(78.4°C)은 물(100°C)보다 낮습니다. 증류를 통해 먼저 기화하는 에탄올을 냉각관으로 모아 분리합니다.',
+    explanation:'에탄올의 끓는점(78.4°C)은 물(100°C)보다 낮습니다. 가열하면 에탄올이 먼저 기화하고, 냉각관을 통해 다시 액체로 모을 수 있습니다!',
     hints:['💡 이 물질은 물보다 낮은 온도에서 끓어요. (78.4°C)','💡 끓는점 차이를 이용해 액체 혼합물을 분리하는 방법은?','💡 정답: 에탄올 / 끓는점 / 증류']},
-  {stage:5,color:'#ec407a',
-    question:'5단계: 마지막! 소금과 물을 분리하려면?',
-    desc:'이제 <strong>소금물</strong>만 남았습니다. 마지막 분리를 완성하세요!',
+  {stage:5,color:'#e91e63',
+    question:'FINAL STAGE — 마지막 두 물질을 분리해 봅시다!',
+    desc:'이제 <strong>두 가지 물질</strong>만 남았습니다. 마지막 분리를 완성하세요!',
+    target:'소금+물',
     remaining:['물','소금'],removed:['스타이로폼','올리브유','플라스틱','에탄올'],
-    slots:[{label:'이용한 특성',answer:'끓는점'},{label:'분리 방법',answer:'증발'}],
-    cards:['끓는점','밀도','용해도','증발','증류','거름(여과)'],
-    explanation:'물(끓는점 100°C)을 가열하여 증발시키면, 끓는점이 매우 높은(1,413°C) 소금 결정만 남습니다.',
-    hints:['💡 소금의 끓는점은 1,413°C! 물은 100°C에요. 엄청난 차이죠?','💡 물을 날려 보내면 무엇이 남을까요?','💡 정답: 끓는점 / 증발']}
+    slots:[{label:'이용한 특성',answer:'끓는점'},{label:'분리 방법',answer:'증류'}],
+    cards:['끓는점','밀도','용해도','증류','증발','거름(여과)'],
+    explanation:'소금물을 가열하면 물(끓는점 100°C)이 기화하여 냉각관을 통해 순수한 물로 모아집니다. 플라스크에는 끓는점이 1,413°C로 매우 높은 소금(NaCl) 결정만 남게 됩니다. 이것이 바로 증류입니다!',
+    hints:['💡 소금의 끓는점은 1,413°C! 물은 100°C에요. 엄청난 차이죠?','💡 물을 기체로 만들어 따로 받아내면 소금만 남아요. 이 방법은?','💡 정답: 끓는점 / 증류']}
 ];
 
+// ===== STATE =====
 let currentStage=0,stageData=[],dragData=null,touchDragEl=null,ghostEl=null;
 let timerInterval=null,startTime=0,stageStartTime=0,totalElapsed=0;
+let lives=5,combo=0,score=0;
 
+// ===== INIT =====
 function init(){
-  currentStage=0;
+  currentStage=0;lives=5;combo=0;score=0;
   stageData=STAGES.map(()=>({wrongCount:0,hintUsed:0,time:0}));
   document.getElementById('completion').classList.remove('show');
   document.getElementById('completion').innerHTML='';
-  document.getElementById('timerDisplay').style.display='';
+  document.getElementById('hud').style.display='';
+  document.getElementById('missionBriefing').style.display='';
   startTime=Date.now();stageStartTime=Date.now();
-  if(timerInterval) clearInterval(timerInterval);
+  if(timerInterval)clearInterval(timerInterval);
   timerInterval=setInterval(updateTimer,1000);
-  renderProgress();renderStage();
+  renderSubstances();
+  renderLives();
+  renderProgress();
+  updateHudStage();
+  showCountdown(()=>renderStage());
 }
+
+function showCountdown(cb){
+  const ov=document.createElement('div');ov.className='countdown-overlay';
+  document.body.appendChild(ov);
+  let count=3;
+  function tick(){
+    if(count>0){
+      ov.innerHTML='<div class="countdown-number">'+count+'</div>';
+      sfx('countdown');count--;
+      setTimeout(tick,700);
+    }else{
+      ov.innerHTML='<div class="countdown-text">미션 시작!</div>';
+      sfx('go');
+      setTimeout(()=>{ov.remove();cb();},600);
+    }
+  }
+  tick();
+}
+
 function updateTimer(){
   const e=Math.floor((Date.now()-startTime)/1000);
-  document.getElementById('timerValue').textContent=
-    String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0');
+  const m=String(Math.floor(e/60)).padStart(2,'0');
+  const s=String(e%60).padStart(2,'0');
+  document.getElementById('timerValue').textContent=m+':'+s;
 }
 function formatTime(s){return s<60?s+'초':Math.floor(s/60)+'분 '+(s%60)+'초';}
+
+function renderSubstances(){
+  const el=document.getElementById('mbSubstances');el.innerHTML='';
+  ALL_SUBSTANCES.forEach(sub=>{
+    const cleared=STAGES.slice(0,currentStage).some(s=>s.removed.includes(sub))||
+      (currentStage>=5);
+    const removed=[];
+    for(let i=0;i<currentStage;i++){removed.push(STAGES[i].target);}
+    const isCleared=removed.includes(sub)||currentStage>=5;
+    el.innerHTML+='<span class="mb-sub'+(isCleared?' cleared':'')+'">'+escapeHTML(sub)+
+      (isCleared?'':' <span class="pulse-ring"></span>')+'</span>';
+  });
+}
+
+function renderLives(){
+  const el=document.getElementById('hudLives');el.innerHTML='';
+  for(let i=0;i<5;i++){
+    el.innerHTML+='<span class="hud-heart'+(i>=lives?' lost':'')+'">❤️</span>';
+  }
+}
+
+function updateHudStage(){
+  document.getElementById('hudStage').textContent='STAGE '+(currentStage+1)+'/5';
+}
+
+function updateCombo(){
+  const el=document.getElementById('hudCombo');
+  if(combo>=2){
+    el.textContent='🔥 COMBO x'+combo;
+    el.classList.add('show');
+  }else{
+    el.classList.remove('show');
+  }
+}
+
 function renderProgress(){
   const bar=document.getElementById('progressBar');bar.innerHTML='';
-  STAGES.forEach(function(_,i){
+  STAGES.forEach((_,i)=>{
     const s=document.createElement('div');s.className='progress-step';
     if(i<currentStage)s.classList.add('completed');
     if(i===currentStage)s.classList.add('active');
     bar.appendChild(s);
   });
 }
+
 function escapeHTML(str){
   const d=document.createElement('div');d.textContent=str;return d.innerHTML;
 }
+
+function screenFlash(color){
+  const f=document.createElement('div');f.className='screen-flash '+color;
+  document.body.appendChild(f);setTimeout(()=>f.remove(),400);
+}
+
+function floatScore(text,isPlus,x,y){
+  const el=document.createElement('div');
+  el.className='float-score '+(isPlus?'plus':'minus');
+  el.textContent=text;
+  el.style.left=x+'px';el.style.top=y+'px';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1100);
+}
+
+// ===== RENDER STAGE =====
 function renderStage(){
   const stage=STAGES[currentStage];
-  const shuffled=[...stage.cards].sort(function(){return Math.random()-.5;});
-  var html='<div class="stage-card" style="--stage-color:'+stage.color+'">';
-  html+='<div class="stage-number">STAGE '+stage.stage+' / 5</div>';
+  const shuffled=[...stage.cards].sort(()=>Math.random()-.5);
+  let html='<div class="stage-card" style="--stage-color:'+stage.color+'">';
+  html+='<div class="stage-number">MISSION '+stage.stage+' / 5</div>';
   html+='<div class="stage-question">'+stage.question+'</div>';
   html+='<div class="stage-desc">'+stage.desc+'</div>';
-  html+='<div class="remaining-label">🧪 현재 혼합물 구성</div>';
-  html+='<div class="remaining">';
-  stage.removed.forEach(function(s){html+='<span class="substance-tag removed">'+escapeHTML(s)+'</span>';});
-  stage.remaining.forEach(function(s){html+='<span class="substance-tag">'+escapeHTML(s)+'</span>';});
-  html+='</div>';
   html+='<div class="drop-zones">';
-  stage.slots.forEach(function(slot,i){
+  stage.slots.forEach((slot,i)=>{
     html+='<div class="drop-zone-row"><div class="drop-label">'+escapeHTML(slot.label)+'</div>';
     html+='<div class="drop-zone" id="dropZone'+i+'" data-index="'+i+'" data-answer="'+escapeHTML(slot.answer)+'">';
-    html+='<span class="placeholder">카드를 여기에 놓으세요</span></div></div>';
+    html+='<span class="placeholder">카드를 여기로</span></div></div>';
   });
   html+='</div>';
   html+='<div class="cards-area" id="cardsArea">';
-  shuffled.forEach(function(c){
+  shuffled.forEach(c=>{
     html+='<div class="drag-card" draggable="true" data-value="'+escapeHTML(c)+'">'+escapeHTML(c)+'</div>';
   });
   html+='</div>';
@@ -264,280 +630,345 @@ function renderStage(){
   document.getElementById('quizArea').innerHTML=html;
   stageStartTime=Date.now();
   setupDragAndDrop();
+  sfx('tick');
 }
+
 function showHint(){
-  var sd=stageData[currentStage],stage=STAGES[currentStage];
+  const sd=stageData[currentStage],stage=STAGES[currentStage];
   if(sd.hintUsed>=stage.hints.length)return;
-  var hb=document.getElementById('hintBox');
+  sfx('hint');
   sd.hintUsed++;
+  const hb=document.getElementById('hintBox');
   hb.innerHTML='<div class="hint-title">힌트 '+sd.hintUsed+'/'+stage.hints.length+'</div>'+stage.hints[sd.hintUsed-1];
   hb.classList.add('show');
   if(sd.hintUsed>=stage.hints.length)document.getElementById('btnHint').disabled=true;
 }
+
+// ===== DRAG & DROP =====
 function setupDragAndDrop(){
-  document.querySelectorAll('.drag-card').forEach(function(card){
-    card.addEventListener('dragstart',function(e){
-      dragData=card.dataset.value;
-      card.classList.add('dragging');
+  document.querySelectorAll('.drag-card').forEach(card=>{
+    card.addEventListener('dragstart',e=>{
+      dragData=card.dataset.value;card.classList.add('dragging');
       e.dataTransfer.effectAllowed='move';
       e.dataTransfer.setData('text/plain',card.dataset.value);
+      sfx('pickup');
     });
-    card.addEventListener('dragend',function(){card.classList.remove('dragging');dragData=null;});
+    card.addEventListener('dragend',()=>{card.classList.remove('dragging');dragData=null;});
     card.addEventListener('touchstart',handleTS,{passive:false});
     card.addEventListener('touchmove',handleTM,{passive:false});
     card.addEventListener('touchend',handleTE,{passive:false});
   });
-  document.querySelectorAll('.drop-zone').forEach(function(zone){
-    zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('drag-over');});
-    zone.addEventListener('dragleave',function(){zone.classList.remove('drag-over');});
-    zone.addEventListener('drop',function(e){e.preventDefault();zone.classList.remove('drag-over');dropCard(zone,dragData);});
-    zone.addEventListener('click',function(){
-      var p=zone.querySelector('.dropped-card');
+  document.querySelectorAll('.drop-zone').forEach(zone=>{
+    zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over');});
+    zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
+    zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');dropCard(zone,dragData);});
+    zone.addEventListener('click',()=>{
+      const p=zone.querySelector('.dropped-card');
       if(p&&!zone.classList.contains('correct')){
-        var v=p.dataset.value;
-        zone.innerHTML='<span class="placeholder">카드를 여기에 놓으세요</span>';
-        document.querySelectorAll('#cardsArea .drag-card').forEach(function(c){
-          if(c.dataset.value===v) c.classList.remove('placed');
+        const v=p.dataset.value;
+        zone.innerHTML='<span class="placeholder">카드를 여기로</span>';
+        document.querySelectorAll('#cardsArea .drag-card').forEach(c=>{
+          if(c.dataset.value===v)c.classList.remove('placed');
         });
         updateCheckBtn();
       }
     });
   });
 }
+
 function handleTS(e){
   e.preventDefault();
-  var c=e.currentTarget;
-  if(c.classList.contains('placed'))return;
+  const c=e.currentTarget;if(c.classList.contains('placed'))return;
   touchDragEl=c;dragData=c.dataset.value;c.classList.add('dragging');
+  sfx('pickup');
   ghostEl=document.createElement('div');ghostEl.className='drag-ghost';
   ghostEl.textContent=c.textContent;document.body.appendChild(ghostEl);
-  var t=e.touches[0];ghostEl.style.left=t.clientX+'px';ghostEl.style.top=t.clientY+'px';
+  const t=e.touches[0];ghostEl.style.left=t.clientX+'px';ghostEl.style.top=t.clientY+'px';
 }
 function handleTM(e){
   e.preventDefault();if(!ghostEl)return;
-  var t=e.touches[0];ghostEl.style.left=t.clientX+'px';ghostEl.style.top=t.clientY+'px';
-  document.querySelectorAll('.drop-zone').forEach(function(z){
-    var r=z.getBoundingClientRect();
+  const t=e.touches[0];ghostEl.style.left=t.clientX+'px';ghostEl.style.top=t.clientY+'px';
+  document.querySelectorAll('.drop-zone').forEach(z=>{
+    const r=z.getBoundingClientRect();
     z.classList.toggle('drag-over',t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom);
   });
 }
 function handleTE(e){
-  e.preventDefault();
-  if(!ghostEl)return;
+  e.preventDefault();if(!ghostEl)return;
   ghostEl.remove();ghostEl=null;
   if(touchDragEl)touchDragEl.classList.remove('dragging');
-  var t=e.changedTouches[0];
-  document.querySelectorAll('.drop-zone').forEach(function(z){
+  const t=e.changedTouches[0];
+  document.querySelectorAll('.drop-zone').forEach(z=>{
     z.classList.remove('drag-over');
-    var r=z.getBoundingClientRect();
+    const r=z.getBoundingClientRect();
     if(t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom){
       dropCard(z,dragData);
     }
   });
   touchDragEl=null;dragData=null;
 }
+
 function dropCard(zone,value){
   if(!value||zone.classList.contains('correct'))return;
-  // 같은 카드가 다른 슬롯에 이미 놓여있으면 그쪽에서 제거
-  document.querySelectorAll('.drop-zone').forEach(function(z){
+  sfx('drop');
+  document.querySelectorAll('.drop-zone').forEach(z=>{
     if(z===zone)return;
-    var existing=z.querySelector('.dropped-card');
+    const existing=z.querySelector('.dropped-card');
     if(existing&&existing.dataset.value===value){
-      z.innerHTML='<span class="placeholder">카드를 여기에 놓으세요</span>';
+      z.innerHTML='<span class="placeholder">카드를 여기로</span>';
     }
   });
-  // 현재 슬롯에 이미 다른 카드가 있으면 되돌리기
-  var prev=zone.querySelector('.dropped-card');
+  const prev=zone.querySelector('.dropped-card');
   if(prev){
-    var ov=prev.dataset.value;
-    document.querySelectorAll('#cardsArea .drag-card').forEach(function(c){
+    const ov=prev.dataset.value;
+    document.querySelectorAll('#cardsArea .drag-card').forEach(c=>{
       if(c.dataset.value===ov)c.classList.remove('placed');
     });
   }
   zone.innerHTML='<div class="dropped-card drag-card placed" data-value="'+escapeHTML(value)+'">'+escapeHTML(value)+'</div>';
-  document.querySelectorAll('#cardsArea .drag-card').forEach(function(c){
+  document.querySelectorAll('#cardsArea .drag-card').forEach(c=>{
     if(c.dataset.value===value)c.classList.add('placed');
   });
   updateCheckBtn();
 }
+
 function updateCheckBtn(){
-  var ok=true;
-  document.querySelectorAll('.drop-zone').forEach(function(z){
+  let ok=true;
+  document.querySelectorAll('.drop-zone').forEach(z=>{
     if(!z.querySelector('.dropped-card'))ok=false;
   });
   document.getElementById('btnCheck').disabled=!ok;
 }
+
+// ===== CHECK ANSWER =====
 function checkAnswer(){
-  var stage=STAGES[currentStage],zones=document.querySelectorAll('.drop-zone');
-  var allCorrect=true;
-  zones.forEach(function(z,i){
-    var p=z.querySelector('.dropped-card');
+  const stage=STAGES[currentStage],zones=document.querySelectorAll('.drop-zone');
+  let allCorrect=true;
+  zones.forEach((z,i)=>{
+    const p=z.querySelector('.dropped-card');
     if(p&&p.dataset.value===stage.slots[i].answer){
       z.classList.add('correct');
     }else{
       z.classList.add('wrong');allCorrect=false;
-      setTimeout(function(){z.classList.remove('wrong');},500);
+      setTimeout(()=>z.classList.remove('wrong'),500);
     }
   });
-  var fb=document.getElementById('feedback');fb.classList.add('show');
+
+  const fb=document.getElementById('feedback');fb.classList.add('show');
+
   if(allCorrect){
     stageData[currentStage].time=Math.floor((Date.now()-stageStartTime)/1000);
-    fb.className='feedback show correct';fb.innerHTML='✅ 정답! '+stage.explanation;
+    combo++;
+    const comboBonus=combo>=2?combo*50:0;
+    const baseScore=100;
+    const hintPenalty=stageData[currentStage].hintUsed*20;
+    const stageScore=Math.max(0,baseScore+comboBonus-hintPenalty);
+    score+=stageScore;
+
+    sfx(combo>=3?'combo':'correct');
+    screenFlash('green');
+    const rect=document.getElementById('btnCheck').getBoundingClientRect();
+    floatScore('+'+stageScore,true,rect.left+rect.width/2,rect.top);
+    miniConfetti();
+    updateCombo();
+
+    fb.className='feedback show correct';
+    fb.innerHTML='✅ <strong>분리 성공!</strong> '+stage.explanation+
+      (combo>=2?'<br>🔥 <strong>COMBO x'+combo+'!</strong> 보너스 +'+comboBonus+'점':'');
+
     document.getElementById('hintBox').classList.remove('show');
     document.getElementById('btnHint').style.display='none';
-    miniConfetti();
-    var btn=document.getElementById('btnCheck');
+
+    const btn=document.getElementById('btnCheck');
     if(currentStage<STAGES.length-1){
-      btn.className='btn next';btn.textContent='다음 단계로 →';btn.disabled=false;
+      btn.className='btn next';btn.textContent='다음 미션으로 →';btn.disabled=false;
       btn.onclick=nextStage;
     }else{
-      btn.className='btn next';btn.textContent='결과 보기 🎉';btn.disabled=false;
+      btn.className='btn next';btn.textContent='미션 결과 보기 🎉';btn.disabled=false;
       btn.onclick=showCompletion;
     }
+    // 스테이지 클리어 사운드 (마지막이면 안 함)
+    if(currentStage<STAGES.length-1) setTimeout(()=>sfx('stageClear'),400);
   }else{
     stageData[currentStage].wrongCount++;
-    var wc=stageData[currentStage].wrongCount;
-    var msg='❌ '+wc+'번째 오답! ';
-    if(wc===1)msg+='다시 한번 생각해 보세요.';
+    combo=0;updateCombo();
+    lives=Math.max(0,lives-1);
+    renderLives();
+
+    sfx('wrong');
+    screenFlash('red');
+    sfx('lifeLost');
+    const rect=document.getElementById('btnCheck').getBoundingClientRect();
+    floatScore('−50',false,rect.left+rect.width/2,rect.top);
+    score=Math.max(0,score-50);
+
+    const wc=stageData[currentStage].wrongCount;
+    let msg='❌ 오답! (−50점) ';
+    if(wc===1)msg+='다시 생각해 보세요!';
     else if(wc===2)msg+='힌트를 활용해 보세요! 💡';
-    else msg+='힌트 버튼을 눌러 정답에 가까운 도움을 받으세요.';
+    else msg+='힌트 버튼을 눌러 도움을 받으세요.';
+    if(lives<=1)msg+='<br>⚠️ 라이프가 얼마 남지 않았습니다!';
+
     fb.className='feedback show wrong';fb.innerHTML=msg;
-    setTimeout(function(){
+
+    setTimeout(()=>{
       fb.classList.remove('show');
-      zones.forEach(function(z){
+      zones.forEach(z=>{
         if(!z.classList.contains('correct')){
-          var p=z.querySelector('.dropped-card');
+          const p=z.querySelector('.dropped-card');
           if(p){
-            var v=p.dataset.value;
-            z.innerHTML='<span class="placeholder">카드를 여기에 놓으세요</span>';
-            document.querySelectorAll('#cardsArea .drag-card').forEach(function(c){
+            const v=p.dataset.value;
+            z.innerHTML='<span class="placeholder">카드를 여기로</span>';
+            document.querySelectorAll('#cardsArea .drag-card').forEach(c=>{
               if(c.dataset.value===v)c.classList.remove('placed');
             });
           }
         }
       });
       updateCheckBtn();
-    },1200);
+    },1400);
   }
 }
-function nextStage(){currentStage++;renderProgress();renderStage();window.scrollTo({top:0,behavior:'smooth'});}
 
+function nextStage(){
+  currentStage++;
+  renderSubstances();
+  renderProgress();
+  updateHudStage();
+  renderStage();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== COMPLETION =====
 function showCompletion(){
   clearInterval(timerInterval);
+  sfx('victory');
   totalElapsed=Math.floor((Date.now()-startTime)/1000);
   document.getElementById('quizArea').innerHTML='';
-  document.getElementById('timerDisplay').style.display='none';
+  document.getElementById('hud').style.display='none';
+  document.getElementById('missionBriefing').style.display='none';
   renderProgress();
 
-  var totalWrong=stageData.reduce(function(a,d){return a+d.wrongCount;},0);
-  var totalHints=stageData.reduce(function(a,d){return a+d.hintUsed;},0);
-  var perfectStages=stageData.filter(function(d){return d.wrongCount===0&&d.hintUsed===0;}).length;
-  var fastestIdx=stageData.reduce(function(mi,d,i,a){return d.time<a[mi].time?i:mi;},0);
-  var slowestIdx=stageData.reduce(function(mi,d,i,a){return d.time>a[mi].time?i:mi;},0);
-  var hardestIdx=stageData.reduce(function(mi,d,i,a){return (d.wrongCount+d.hintUsed)>(a[mi].wrongCount+a[mi].hintUsed)?i:mi;},0);
-  var hardest=stageData[hardestIdx];
+  const totalWrong=stageData.reduce((a,d)=>a+d.wrongCount,0);
+  const totalHints=stageData.reduce((a,d)=>a+d.hintUsed,0);
+  const perfectStages=stageData.filter(d=>d.wrongCount===0&&d.hintUsed===0).length;
+  const fastestIdx=stageData.reduce((mi,d,i,a)=>d.time<a[mi].time?i:mi,0);
+  const slowestIdx=stageData.reduce((mi,d,i,a)=>d.time>a[mi].time?i:mi,0);
+  const hardestIdx=stageData.reduce((mi,d,i,a)=>(d.wrongCount+d.hintUsed)>(a[mi].wrongCount+a[mi].hintUsed)?i:mi,0);
+  const hardest=stageData[hardestIdx];
 
-  var gradeClass,gradeText,gradeComment;
-  if(totalWrong===0&&totalHints===0){gradeClass='perfect';gradeText='🏅 완벽한 과학자!';gradeComment='힌트 없이 한 번에 모두 맞혔어요! 혼합물 분리의 달인이네요!';}
+  let gradeClass,gradeText,gradeComment;
+  if(totalWrong===0&&totalHints===0){gradeClass='perfect';gradeText='🏅 완벽한 과학자!';gradeComment='힌트 없이 한 번에 모두 클리어! 혼합물 분리의 달인!';}
   else if(totalWrong<=2&&totalHints<=2){gradeClass='great';gradeText='🔬 우수한 실험자!';gradeComment='거의 다 맞혔어요! 물질의 특성을 잘 이해하고 있네요.';}
-  else if(totalWrong<=5){gradeClass='good';gradeText='🧪 성장하는 탐구자!';gradeComment='좋은 시도였어요! 틀린 부분을 복습하면 금방 마스터할 수 있어요.';}
-  else{gradeClass='tryagain';gradeText='📚 도전하는 학습자!';gradeComment='어려웠지만 끝까지 완료했어요! 교과서를 다시 한번 읽어보면 도움이 될 거예요.';}
+  else if(totalWrong<=5){gradeClass='good';gradeText='🧪 성장하는 탐구자!';gradeComment='좋은 시도! 틀린 부분을 복습하면 금방 마스터할 수 있어요.';}
+  else{gradeClass='tryagain';gradeText='📚 도전하는 학습자!';gradeComment='어려웠지만 끝까지 완료했어요! 교과서를 다시 보면 도움이 될 거예요.';}
 
-  var diffHTML='';
+  let diffHTML='';
   if(hardest.wrongCount>0||hardest.hintUsed>0){
-    var hs=STAGES[hardestIdx];
-    diffHTML='<div class="difficulty-box"><div class="diff-title">📊 가장 어려워한 단계: '+hs.stage+'단계</div>';
-    diffHTML+='<div class="diff-text"><strong>'+hs.slots.map(function(s){return escapeHTML(s.answer);}).join(' / ')+'</strong><br>';
-    diffHTML+=hs.explanation+'<br>(오답 '+hardest.wrongCount+'회, 힌트 '+hardest.hintUsed+'회 사용)</div></div>';
+    const hs=STAGES[hardestIdx];
+    diffHTML='<div class="difficulty-box"><div class="diff-title">📊 가장 어려워한 단계: STAGE '+hs.stage+'</div>';
+    diffHTML+='<div class="diff-text"><strong>'+hs.slots.map(s=>escapeHTML(s.answer)).join(' / ')+'</strong><br>';
+    diffHTML+=hs.explanation+'<br>(오답 '+hardest.wrongCount+'회, 힌트 '+hardest.hintUsed+'회)</div></div>';
   }
 
-  var avgTime=Math.round(totalElapsed/5);
-  var funFacts='<div class="fun-facts"><div class="ff-title">🎲 재미있는 기록</div>';
-  funFacts+='<div class="ff-item"><div class="ff-icon">⚡</div>가장 빠르게 푼 단계: <strong>'+STAGES[fastestIdx].stage+'단계</strong> ('+formatTime(stageData[fastestIdx].time)+')</div>';
-  funFacts+='<div class="ff-item"><div class="ff-icon">🐢</div>가장 오래 걸린 단계: <strong>'+STAGES[slowestIdx].stage+'단계</strong> ('+formatTime(stageData[slowestIdx].time)+')</div>';
-  funFacts+='<div class="ff-item"><div class="ff-icon">📊</div>단계 평균 소요 시간: <strong>'+formatTime(avgTime)+'</strong></div>';
-  if(perfectStages>0) funFacts+='<div class="ff-item"><div class="ff-icon">⭐</div>한 번에 맞힌 단계: <strong>'+perfectStages+'개</strong></div>';
-  if(totalWrong===0&&totalHints===0) funFacts+='<div class="ff-item"><div class="ff-icon">🎯</div><strong>올 퍼펙트!</strong> 힌트도, 오답도 없는 완벽한 기록!</div>';
+  const avgTime=Math.round(totalElapsed/5);
+  let funFacts='<div class="fun-facts"><div class="ff-title">RECORDS</div>';
+  funFacts+='<div class="ff-item"><div class="ff-icon">⚡</div>가장 빠르게 클리어: <strong>STAGE '+STAGES[fastestIdx].stage+'</strong> ('+formatTime(stageData[fastestIdx].time)+')</div>';
+  funFacts+='<div class="ff-item"><div class="ff-icon">🐢</div>가장 오래 걸린 단계: <strong>STAGE '+STAGES[slowestIdx].stage+'</strong> ('+formatTime(stageData[slowestIdx].time)+')</div>';
+  funFacts+='<div class="ff-item"><div class="ff-icon">📊</div>단계 평균 소요: <strong>'+formatTime(avgTime)+'</strong></div>';
+  if(perfectStages>0) funFacts+='<div class="ff-item"><div class="ff-icon">⭐</div>퍼펙트 클리어 단계: <strong>'+perfectStages+'개</strong></div>';
+  if(totalWrong===0&&totalHints===0) funFacts+='<div class="ff-item"><div class="ff-icon">🎯</div><strong>ALL PERFECT!</strong> 힌트도, 오답도 없는 완벽 클리어!</div>';
   funFacts+='</div>';
 
-  var now=new Date();
-  var dateStr=now.getFullYear()+'.'+String(now.getMonth()+1).padStart(2,'0')+'.'+String(now.getDate()).padStart(2,'0');
+  const now=new Date();
+  const dateStr=now.getFullYear()+'.'+String(now.getMonth()+1).padStart(2,'0')+'.'+String(now.getDate()).padStart(2,'0');
+  const isPerfect=(totalWrong===0&&totalHints===0);
 
-  var comp=document.getElementById('completion');
-  var isPerfect=(totalWrong===0&&totalHints===0);
-  var resultHTML='<div class="result-card" id="resultCard">';
+  let resultHTML='<div class="result-card" id="resultCard">';
   resultHTML+='<div class="result-header"><div class="trophy">'+(isPerfect?'🏆':'🧪')+'</div>';
-  resultHTML+='<h2>혼합물 분리 실험 완료!</h2><div class="date-text">'+dateStr+'</div></div>';
+  resultHTML+='<h2>혼합물 분리 미션 완료!</h2><div class="date-text">'+dateStr+'</div></div>';
   resultHTML+='<div class="grade-section"><div class="grade-badge '+gradeClass+'">'+gradeText+'</div>';
   resultHTML+='<div class="grade-comment">'+gradeComment+'</div></div>';
   resultHTML+='<div class="stats-grid">';
+  resultHTML+='<div class="stat-box"><div class="stat-icon">🏆</div><div class="stat-value">'+score+'</div><div class="stat-label">최종 점수</div></div>';
   resultHTML+='<div class="stat-box"><div class="stat-icon">⏱</div><div class="stat-value">'+formatTime(totalElapsed)+'</div><div class="stat-label">총 소요 시간</div></div>';
-  resultHTML+='<div class="stat-box"><div class="stat-icon">❌</div><div class="stat-value">'+totalWrong+'회</div><div class="stat-label">총 오답 횟수</div></div>';
-  resultHTML+='<div class="stat-box"><div class="stat-icon">💡</div><div class="stat-value">'+totalHints+'회</div><div class="stat-label">힌트 사용</div></div>';
+  resultHTML+='<div class="stat-box"><div class="stat-icon">❌</div><div class="stat-value">'+totalWrong+'</div><div class="stat-label">총 오답</div></div>';
+  resultHTML+='<div class="stat-box"><div class="stat-icon">❤️</div><div class="stat-value">'+lives+'</div><div class="stat-label">남은 라이프</div></div>';
   resultHTML+='</div>';
   resultHTML+=diffHTML;
-  resultHTML+='<div class="stage-results"><div class="sr-title">단계별 결과</div>';
-  STAGES.forEach(function(s,i){
-    var d=stageData[i];
-    var isHard=(i===hardestIdx&&(d.wrongCount>0||d.hintUsed>0));
-    var status=(d.wrongCount===0&&d.hintUsed===0)?'⭐':(d.wrongCount===0?'✅':'🔄');
+  resultHTML+='<div class="stage-results"><div class="sr-title">STAGE RESULTS</div>';
+  STAGES.forEach((s,i)=>{
+    const d=stageData[i];
+    const isHard=(i===hardestIdx&&(d.wrongCount>0||d.hintUsed>0));
+    const status=(d.wrongCount===0&&d.hintUsed===0)?'⭐':(d.wrongCount===0?'✅':'🔄');
     resultHTML+='<div class="sr-row'+(isHard?' hard':'')+'">';
     resultHTML+='<div class="sr-stage" style="color:'+s.color+'">STAGE '+s.stage+'</div>';
-    resultHTML+='<div class="sr-content"><strong>'+s.slots.map(function(sl){return escapeHTML(sl.answer);}).join(' · ')+'</strong><br>';
-    resultHTML+='오답 '+d.wrongCount+'회 · 힌트 '+d.hintUsed+'회 · '+formatTime(d.time)+'</div>';
+    resultHTML+='<div class="sr-content"><strong>'+s.slots.map(sl=>escapeHTML(sl.answer)).join(' · ')+'</strong><br>';
+    resultHTML+='오답 '+d.wrongCount+' · 힌트 '+d.hintUsed+' · '+formatTime(d.time)+'</div>';
     resultHTML+='<div class="sr-status">'+status+'</div></div>';
   });
   resultHTML+='</div>';
   resultHTML+=funFacts;
-  resultHTML+='<div class="result-footer"><div class="brand-mark">SONG SSAEM SCIENCE · 송쌤과학</div></div>';
+  resultHTML+='<div class="result-footer"><div class="brand-mark">SONG SSAEM SCIENCE · 송쌤과학</div>';
+  resultHTML+='<div class="copyright">© '+now.getFullYear()+' 송쌤과학 All rights reserved.</div>';
+  resultHTML+='<div class="sns-links">';
+  resultHTML+='<a href="https://www.youtube.com/@songsamscience" target="_blank" class="sns-btn youtube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>송쌤과학 유튜브</a>';
+  resultHTML+='<a href="https://www.instagram.com/songsamscience" target="_blank" class="sns-btn instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>송쌤과학 인스타</a>';
+  resultHTML+='</div></div>';
   resultHTML+='</div>';
   resultHTML+='<div class="result-buttons"><button class="btn-restart" onclick="init()">다시 도전하기</button>';
-  resultHTML+='<button class="btn-capture" onclick="captureResult()">📸 결과 캡처하기</button></div>';
+  resultHTML+='<button class="btn-capture" onclick="captureResult()">📸 결과 캡처</button></div>';
 
+  const comp=document.getElementById('completion');
   comp.innerHTML=resultHTML;
   comp.classList.add('show');
   bigConfetti();
 }
 
+// ===== CAPTURE =====
 async function captureResult(){
-  var card=document.getElementById('resultCard');
+  const card=document.getElementById('resultCard');
   try{
     if(!window.html2canvas){
-      var s=document.createElement('script');
+      const s=document.createElement('script');
       s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
       document.head.appendChild(s);
-      await new Promise(function(r,j){s.onload=r;s.onerror=j;});
+      await new Promise((r,j)=>{s.onload=r;s.onerror=j;});
     }
-    var canvas=await html2canvas(card,{backgroundColor:'#0f1729',scale:2,useCORS:true,logging:false});
-    var link=document.createElement('a');link.download='송쌤과학_혼합물분리_결과.png';link.href=canvas.toDataURL('image/png');link.click();
+    const canvas=await html2canvas(card,{backgroundColor:'#080c18',scale:2,useCORS:true,logging:false});
+    const link=document.createElement('a');link.download='송쌤과학_혼합물분리_미션결과.png';
+    link.href=canvas.toDataURL('image/png');link.click();
     showToast('📸 결과 이미지가 저장되었습니다!');
   }catch(err){showToast('길게 눌러 스크린샷을 저장해 주세요.');}
 }
 function showToast(msg){
-  var t=document.createElement('div');t.className='toast';t.textContent=msg;
-  document.body.appendChild(t);setTimeout(function(){t.remove();},2500);
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
 }
+
+// ===== CONFETTI =====
 function miniConfetti(){
-  var c=['#4fc3f7','#ab47bc','#ff7043','#66bb6a','#ffa726','#ec407a','#ffd54f'];
-  for(var i=0;i<20;i++){
-    var p=document.createElement('div');p.className='confetti-piece';
-    p.style.left=(30+Math.random()*40)+'vw';p.style.top='-10px';
+  const c=['#00e5ff','#7c4dff','#ff6d00','#00e676','#ffab00','#e91e63','#ffd740'];
+  for(let i=0;i<25;i++){
+    const p=document.createElement('div');p.className='confetti-piece';
+    p.style.left=(25+Math.random()*50)+'vw';p.style.top='-10px';
     p.style.background=c[Math.floor(Math.random()*c.length)];
     p.style.animationDelay=(Math.random()*.3)+'s';
-    p.style.animationDuration=(1+Math.random())+'s';
-    document.body.appendChild(p);setTimeout(function(el){el.remove();},2000,p);
+    p.style.animationDuration=(1.2+Math.random()*.8)+'s';
+    document.body.appendChild(p);setTimeout(el=>el.remove(),2500,p);
   }
 }
 function bigConfetti(){
-  var c=['#4fc3f7','#ab47bc','#ff7043','#66bb6a','#ffa726','#ec407a','#ffd54f','#fff'];
-  for(var i=0;i<60;i++){
-    var p=document.createElement('div');p.className='confetti-piece';
+  const c=['#00e5ff','#7c4dff','#ff6d00','#00e676','#ffab00','#e91e63','#ffd740','#fff'];
+  for(let i=0;i<80;i++){
+    const p=document.createElement('div');p.className='confetti-piece';
     p.style.left=(Math.random()*100)+'vw';p.style.top='-10px';
-    p.style.width=(6+Math.random()*8)+'px';p.style.height=(6+Math.random()*8)+'px';
+    p.style.width=(6+Math.random()*10)+'px';p.style.height=(6+Math.random()*10)+'px';
     p.style.background=c[Math.floor(Math.random()*c.length)];
-    p.style.animationDelay=(Math.random()*.8)+'s';
-    p.style.animationDuration=(1.5+Math.random()*1.5)+'s';
-    document.body.appendChild(p);setTimeout(function(el){el.remove();},4000,p);
+    p.style.animationDelay=(Math.random()*1)+'s';
+    p.style.animationDuration=(1.5+Math.random()*2)+'s';
+    p.style.borderRadius=Math.random()>.5?'50%':'2px';
+    document.body.appendChild(p);setTimeout(el=>el.remove(),4500,p);
   }
 }
 
