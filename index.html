@@ -25,7 +25,54 @@
   --gold: #ffd740;
   --drop-zone: #0e1a32;
   --drop-hover: #162844;
+  --scanline: rgba(0,229,255,.012);
+  --title-shadow-color: var(--accent-glow);
+  --card-grad1: #141e38;
+  --card-grad2: #1a2848;
+  --ghost-grad1: #1a2848;
+  --ghost-grad2: #0e1a32;
+  --capture-bg: #080c18;
 }
+:root.light {
+  --bg: #f0f4f8;
+  --card-bg: #ffffff;
+  --card-border: #d0d8e8;
+  --accent: #0288d1;
+  --accent2: #5e35b1;
+  --accent-glow: rgba(2,136,209,0.18);
+  --accent2-glow: rgba(94,53,177,0.15);
+  --success: #2e7d32;
+  --success-glow: rgba(46,125,50,0.18);
+  --error: #c62828;
+  --error-glow: rgba(198,40,40,0.18);
+  --warn: #e65100;
+  --warn-glow: rgba(230,81,0,0.12);
+  --text: #1a2030;
+  --text-dim: #5a6a88;
+  --gold: #e65100;
+  --drop-zone: #e8eef6;
+  --drop-hover: #dce4f0;
+  --scanline: transparent;
+  --title-shadow-color: rgba(2,136,209,0.12);
+  --card-grad1: #f4f6fa;
+  --card-grad2: #eaeff6;
+  --ghost-grad1: #ffffff;
+  --ghost-grad2: #eaeff6;
+  --capture-bg: #f0f4f8;
+}
+:root.light body::before{background:
+  radial-gradient(ellipse at 15% 10%,rgba(2,136,209,.04) 0%,transparent 50%),
+  radial-gradient(ellipse at 85% 90%,rgba(94,53,177,.04) 0%,transparent 50%),
+  radial-gradient(ellipse at 50% 50%,rgba(46,125,50,.02) 0%,transparent 40%)}
+:root.light .stage-card{box-shadow:0 2px 12px rgba(0,0,0,.06)}
+:root.light .drag-card{box-shadow:0 1px 4px rgba(0,0,0,.08)}
+:root.light .hud{background:rgba(255,255,255,.6);border-color:var(--card-border)}
+:root.light .mission-briefing{background:linear-gradient(135deg,rgba(2,136,209,.05),rgba(94,53,177,.05));
+  border-color:rgba(2,136,209,.15)}
+:root.light .result-card{box-shadow:0 2px 16px rgba(0,0,0,.08)}
+:root.light .countdown-number{color:var(--accent);text-shadow:none}
+:root.light .countdown-text{color:var(--text);text-shadow:none}
+:root.light .result-header h2{color:var(--gold);-webkit-text-fill-color:var(--gold);background:none;text-shadow:none}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
@@ -37,7 +84,7 @@ body::before{content:'';position:fixed;inset:0;background:
 
 /* Scan-lines */
 body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(
-  0deg,transparent,transparent 2px,rgba(0,229,255,.012) 2px,rgba(0,229,255,.012) 4px);
+  0deg,transparent,transparent 2px,var(--scanline) 2px,var(--scanline) 4px);
   pointer-events:none;z-index:0}
 
 .container{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:20px 16px 50px}
@@ -45,7 +92,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 /* ===== HEADER ===== */
 .header{text-align:center;margin-bottom:10px;position:relative}
 .header .brand{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:600;color:var(--accent);letter-spacing:5px;text-transform:uppercase;margin-bottom:2px;opacity:.7}
-.header h1{font-family:'Black Han Sans',sans-serif;font-size:30px;color:#fff;line-height:1.3;text-shadow:0 0 30px var(--accent-glow),0 0 60px rgba(0,229,255,.1)}
+.header h1{font-family:'Black Han Sans',sans-serif;font-size:30px;color:var(--text);line-height:1.3;text-shadow:0 0 30px var(--title-shadow-color),0 0 60px rgba(0,229,255,.1)}
 .header h1 .em{color:var(--accent)}
 .header .subtitle{font-size:12px;color:var(--text-dim);margin-top:4px;letter-spacing:1px}
 
@@ -109,13 +156,14 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .stage-number{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;
   color:var(--stage-color,var(--accent));letter-spacing:3px;text-transform:uppercase;margin-bottom:4px}
 .stage-question{font-family:'Black Han Sans',sans-serif;font-size:20px;line-height:1.4;margin-bottom:4px;
-  color:#fff}
+  color:var(--text)}
 .stage-desc{font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:16px}
 .stage-desc strong{color:var(--text);font-weight:700}
 
 /* ===== COUNTDOWN OVERLAY ===== */
 .countdown-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;
   background:rgba(8,12,24,.92);backdrop-filter:blur(10px)}
+:root.light .countdown-overlay{background:rgba(240,244,248,.92)}
 .countdown-number{font-family:'Orbitron',sans-serif;font-size:100px;font-weight:900;
   color:var(--accent);text-shadow:0 0 40px var(--accent-glow),0 0 80px rgba(0,229,255,.2);
   animation:countPop .5s ease}
@@ -141,7 +189,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 /* ===== CARDS ===== */
 .cards-area{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:54px;
   padding:14px;background:rgba(255,255,255,.015);border-radius:14px;border:1px solid rgba(255,255,255,.03)}
-.drag-card{padding:10px 16px;background:linear-gradient(135deg,#141e38,#1a2848);
+.drag-card{padding:10px 16px;background:linear-gradient(135deg,var(--card-grad1),var(--card-grad2));
   border:1.5px solid var(--card-border);border-radius:12px;font-size:13px;font-weight:700;
   color:var(--text);cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;
   transition:all .2s;white-space:nowrap;position:relative;overflow:hidden}
@@ -155,7 +203,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .drag-card.placed{background:linear-gradient(135deg,rgba(0,230,118,.1),rgba(0,230,118,.03));
   border-color:rgba(0,230,118,.3);color:var(--success);pointer-events:none}
 .drag-ghost{position:fixed;pointer-events:none;z-index:9999;padding:10px 16px;
-  background:linear-gradient(135deg,#1a2848,#0e1a32);border:2px solid var(--accent);
+  background:linear-gradient(135deg,var(--ghost-grad1),var(--ghost-grad2));border:2px solid var(--accent);
   border-radius:12px;font-size:13px;font-weight:700;color:var(--accent);
   box-shadow:0 8px 40px rgba(0,0,0,.6),0 0 30px var(--accent-glow);
   font-family:'Noto Sans KR',sans-serif;transform:translate(-50%,-50%) scale(1.08);white-space:nowrap}
@@ -164,12 +212,12 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 .btn-row{display:flex;gap:8px;margin-top:14px}
 .btn{flex:1;padding:14px;border:none;border-radius:14px;font-family:'Noto Sans KR',sans-serif;
   font-size:14px;font-weight:700;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
-.btn.primary{background:linear-gradient(135deg,var(--accent),#0091ea);color:#000;
+.btn.primary{background:linear-gradient(135deg,var(--accent),#0091ea);color:#fff;
   box-shadow:0 4px 20px var(--accent-glow);font-weight:800}
 .btn.primary:hover{transform:translateY(-2px);box-shadow:0 6px 30px var(--accent-glow)}
 .btn:disabled{background:var(--card-border)!important;color:var(--text-dim)!important;
   cursor:default!important;box-shadow:none!important;transform:none!important;border:none!important}
-.btn.next{background:linear-gradient(135deg,var(--success),#00c853);color:#000;
+.btn.next{background:linear-gradient(135deg,var(--success),#00c853);color:#fff;
   box-shadow:0 4px 20px var(--success-glow);font-weight:800}
 .btn.hint{background:transparent;border:1.5px solid var(--gold);color:var(--gold);flex:0 0 auto;padding:14px 20px}
 .btn.hint:hover{background:rgba(255,215,64,.08)}
@@ -283,7 +331,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
   font-size:14px;font-weight:700;cursor:pointer;transition:all .3s}
 .btn-restart:hover{background:var(--accent);color:var(--bg)}
 .btn-capture{flex:1;padding:14px;border:none;border-radius:14px;
-  background:linear-gradient(135deg,var(--accent),#0091ea);color:#000;
+  background:linear-gradient(135deg,var(--accent),#0091ea);color:#fff;
   font-family:'Noto Sans KR',sans-serif;font-size:14px;font-weight:800;
   cursor:pointer;transition:all .3s;box-shadow:0 4px 20px var(--accent-glow)}
 .btn-capture:hover{transform:translateY(-2px);box-shadow:0 6px 30px var(--accent-glow)}
@@ -295,7 +343,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 @keyframes confetti-fall{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}
   100%{transform:translateY(85vh) rotate(720deg) scale(.2);opacity:0}}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
-  background:var(--success);color:#000;padding:12px 24px;border-radius:12px;
+  background:var(--success);color:#fff;padding:12px 24px;border-radius:12px;
   font-size:13px;font-weight:700;z-index:9999;box-shadow:0 4px 24px rgba(0,0,0,.5);
   animation:toastIn .3s ease;font-family:'Noto Sans KR',sans-serif}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(20px)}
@@ -342,6 +390,7 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
     <div class="hud-right">
       <div class="hud-combo" id="hudCombo">🔥 COMBO x2</div>
       <div class="hud-lives" id="hudLives"></div>
+      <button class="sound-toggle" id="themeToggle" onclick="toggleTheme()" title="다크/라이트 모드">🌙</button>
       <button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="사운드 ON/OFF">🔊</button>
     </div>
   </div>
@@ -438,6 +487,14 @@ function toggleSound(){
   soundEnabled=!soundEnabled;
   document.getElementById('soundToggle').textContent=soundEnabled?'🔊':'🔇';
   if(soundEnabled)sfx('pickup');
+}
+
+let isDark=true;
+function toggleTheme(){
+  isDark=!isDark;
+  document.documentElement.classList.toggle('light',!isDark);
+  document.getElementById('themeToggle').textContent=isDark?'🌙':'☀️';
+  sfx('tick');
 }
 
 // ===== GAME DATA =====
@@ -935,7 +992,8 @@ async function captureResult(){
       document.head.appendChild(s);
       await new Promise((r,j)=>{s.onload=r;s.onerror=j;});
     }
-    const canvas=await html2canvas(card,{backgroundColor:'#080c18',scale:2,useCORS:true,logging:false});
+    const capBg=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    const canvas=await html2canvas(card,{backgroundColor:capBg,scale:2,useCORS:true,logging:false});
     const link=document.createElement('a');link.download='송쌤과학_혼합물분리_미션결과.png';
     link.href=canvas.toDataURL('image/png');link.click();
     showToast('📸 결과 이미지가 저장되었습니다!');
